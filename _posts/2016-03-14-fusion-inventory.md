@@ -4,7 +4,7 @@ title: Fusion Inventory pour GLPI
 modified:
 categories: [Tuto]
 description: tutoriel FusionInventory pour GLPI
-tags: [tutoriel, inventaire, fusioninventory, glpi]
+tags: [tutoriel, fusioninventory, glpi]
 image:
   feature:
   credit:

@@ -4,7 +4,7 @@ title: Installer GLPI
 modified:
 categories: [Tuto]
 description: Comment installer glpi
-tags: [tutoriel, glpi, parc]
+tags: [tutoriel, glpi]
 image:
   feature:
   credit:
