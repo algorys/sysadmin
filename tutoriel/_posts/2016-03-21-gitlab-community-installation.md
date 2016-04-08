@@ -3,7 +3,7 @@ layout: post
 title: Installation de Gilab Community
 modified:
 description: Tutoriel pour Gitlab, un github-like chez soi
-tags: [tutoriel, gitlab, git]
+tags: [tutoriel, git]
 image:
   feature:
   credit:

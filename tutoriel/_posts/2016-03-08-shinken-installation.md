@@ -3,7 +3,7 @@ layout: post
 title: Installer Shinken
 modified:
 description: Comment installer Shinken
-tags: [tutoriel, shinken, monitoring, nagios]
+tags: [tutoriel, shinken, monitoring]
 image:
   feature:
   credit:
