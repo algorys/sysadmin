@@ -13,7 +13,7 @@
 }
 body {
   padding-top: 80px;
-  color: #ddd;
+  color: #0C0C0C;
   background-color: #292929;
   background-image: url(./pics/triangles.png);
 }
@@ -35,10 +35,11 @@ body {
 .sidebar li {
   margin-top: .7em;
   line-height: 1em;
+  color: #00FFFF;
 }
 
 .well {
-  background-color: #444;
+  background-color: #C1C0C0;
   box-shadow: 0px 0px 0px 0px, 0px 8px 16px rgba(0, 0, 0, 0.2);
   border: 0px;
   border-radius: 6px;
@@ -50,9 +51,9 @@ body {
   width: 75%;
 }
 
-h1 { font-size: 2em; color: #9950CC;}
-h2 { font-size: 1.5em; color: #9950CC;}
-h3 { font-size: 1.17em; color: #9950CC;}
+h1 { font-size: 2em; color: #7D06D0;}
+h2 { font-size: 1.5em; color: #7D06D0;}
+h3 { font-size: 1.17em; color: #7D06D0;}
 h4 { font-size: 1.12em; }
 h5 { font-size: .83em; }
 h6 { font-size: .75em; }
@@ -79,7 +80,7 @@ img + em {
 }
 
 blockquote {
-  color: #bbb;
+  color: #3C75D0;
   font-size: 1em;
 }
 
@@ -93,10 +94,10 @@ blockquote {
 //                    Links
 //********************************************************
 a {
-  color: #1FB3E3;
+  color: #046F92;
 }
 a:hover {
-  color: #3CA2A2;
+  color: #046F92;
   border-bottom: 1px solid transparent;
 }
 
