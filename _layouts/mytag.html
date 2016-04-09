@@ -8,7 +8,7 @@
           <div class="well">
             <h2>Tag : <em>{{page.key}}</em></h2>
               {% for post in site.tags[page.key] %}
-                <p>{{ post.title }}</p>
+              <p><a href="{{ site.baseurl | prepend:site.url }}{{ post.url }}">{{ post.title }}</a></p>
               {% endfor %}
           </div>
         </div>

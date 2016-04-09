@@ -9,7 +9,7 @@ title: Tags
 		<h1>Tags</h1>  
 		<ul>
 			{% for tag in site.tags %}
-			<li><a href="{{ site.baseurl }}/tag/{{ tag[0] }}">{{ tag[0] }}</a></li>
+			<li><a href="{{ site.baseurl  | prepend:site.url }}/tag/{{ tag[0] }}">{{ tag[0] }}</a></li>
 			{% endfor %}
 		</ul>
 	</div>
