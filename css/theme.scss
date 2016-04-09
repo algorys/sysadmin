@@ -125,6 +125,17 @@ ul.social-media {
 //********************************************************
 //                    Post
 //********************************************************
+.nav-tabs {
+    border-bottom: none;
+}
+
+.nav>li>a:hover {
+    background-color: transparent;
+}
+ .nav-tabs>li>a {
+     border: none;
+}
+
 h2.post-title {
   padding-top: 10px;
   text-align: left;
