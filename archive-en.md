@@ -1,13 +1,12 @@
 ---
 layout: page
-title: Archive du Blog
-lang: fr
+title: Blog archive
+lang: en
 ref: archive
 ---
-
 <div class="page-content wc-container">
 	<div class="post">
-		<h1>Blog Archive</h1>
+		<h1>Blog Archive</h1> 
         {% assign posts=site.posts | where:"lang", page.lang %}
 		{% for post in posts %}
 			{% capture currentyear %}{{post.date | date: "%Y"}}{% endcapture %}

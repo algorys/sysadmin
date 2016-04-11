@@ -1,0 +1,99 @@
+---
+layout: page
+lang: fr
+ref: index
+---
+
+ <div class="pitch">
+   <h2>Bienvenue</h2>
+     <p>Admitoring propose de la documentation et des tutoriels pour établir une administration et un monitoring de votre parc informatique. Il aura pour but de réunir et de centraliser les informations nécessaire aux administrateurs réseaux et confrères.</p> 
+    <h2>Les Serveurs :</h2>
+    <p>Vous allez pouvoir retrouver principalement des tutoriels sur comment installer, configurer et relier les projets suivants : </p>
+
+    <ul>
+        <li><b style="font-size: medium;">GLPI</b></li>
+      <p>GLPI est un logiciel libre de gestion de parc. Il permet d'inventorier celui-ci du simple téléphone, au serveur, en passant par les imprimantes jusqu'aux terminaux finaux. Bref tout ce qui est connecté !</br><a href="http://glpi-project.org">Site Officiel</a></p>
+      <li><b style="font-size: medium;">FusionInventory</b></li>
+      <p>FusionInventory permet, grâce à des agents légers, d'inventorier votre parc informatique. Selon vos horaires, désirs, envies... il rappatrie le maximum dans GLPI automatiquement.</br><a href="http://fusioninventory.org">Site Officiel</a></p>
+      <li><b style="font-size: medium;">Shinken</b></li>
+      <p>Shinken permet de monitorer vos ressources, serveurs et services. Il peut fonctionner indépendamment de GLPI ou non et vous signale toute anomalie.</br><a href="http://www.shinken-monitoring.org">Site Officiel</a></p>
+      <li><b style="font-size: medium;">Alignak</b></li>
+      <p>Alignak permet de monitorer vos ressources, serveurs et services, ... Peut fonctionner indépendamment de GLPI. Son but principal est la stabilité.</br><a href="http://alignak-monitoring.github.io">Site Officiel</a></p>
+      <li><b style="font-size: medium;">Glpi-monitoring</b></li>
+      <p>Ce plugin pour GLPI permet d'afficher des vues graphique des données d'un serveur de monitoring. Il permet notamment de créer et modifier vos hôtes à partir de GLPI.</br><a href="https://github.com/ddurieux/glpi_monitoring">Dépôt Officiel</a></p>
+    </ul>
+
+    <p>Nous essaieront également de proposer des tutoriels aussi bien en anglais qu'en français.</p>
+
+    <p>Il y aura notamment des articles sur les dernières releases des différents projets, sur leurs fonctionnalités futures, d'autres serveurs ou outils connexes, etc.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+<div class="well">
+  <h2>Nouveautés</h2>
+{% assign news=site.categories.news | where:"lang", page.lang %}
+{% for post in news %}
+  <h2 class="post-title">
+    <a href="{{post.url | prepend:site.baseurl | prepend:site.url}}">
+      {{ post.title }}
+    </a>
+  </h3>
+
+  <div class="post-meta">
+  <div class="post-time">
+    <i class="fa fa-calendar"></i>
+    <time>{{ post.date | date_to_string }}</time>
+  </div>
+  <ul>
+    {% for tag in post.tags %}
+    <li><a href="{{site.baseurl | prepend:site.url}}/tag/{{ tag }}">{{ tag }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+
+  <div class="post-descr">
+    <p>
+      {{ post.description }}
+    </p>
+  </div>
+  {% endfor %}
+
+</div>
+    </div>
+    <div class="col-md-6">
+            <div class="well">
+                <h2>Derniers tutoriels</h2>
+{% assign tutos=site.categories.tutoriel | where:"lang", page.lang %}
+{% for post in tutos %}
+  <h2 class="post-title">
+    <a href="{{post.url | prepend:site.baseurl | prepend:site.url}}">
+      {{ post.title }}
+    </a>
+  </h3>
+
+  <div class="post-meta">
+  <div class="post-time">
+    <i class="fa fa-calendar"></i>
+    <time>{{ post.date | date_to_string }}</time>
+  </div>
+  <ul>
+    {% for tag in post.tags %}
+    <li><a href="{{site.baseurl | prepend:site.url}}/tag/{{ tag }}">{{ tag }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+
+  <div class="post-descr">
+    <p>
+      {{ post.description }}
+    </p>
+  </div>
+  {% endfor %}
+
+            </div>
+    </div>
+</div>
+<div>
+

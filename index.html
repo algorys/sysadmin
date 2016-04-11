@@ -1,37 +1,40 @@
 ---
 layout: page
+lang: en
+ref: index
 ---
 
  <div class="pitch">
-   <h2>Bienvenue</h2>
-     <p>Admitoring propose de la documentation et des tutoriels pour établir une administration et un monitoring de votre parc informatique. Il aura pour but de réunir et de centraliser les informations nécessaire aux administrateurs réseaux et confrères.</p> 
-    <h2>Les Serveurs :</h2>
-    <p>Vous allez pouvoir retrouver principalement des tutoriels sur comment installer, configurer et relier les projets suivants : </p>
+   <h2>Welcome</h2>
+   <p>Admitoring provides documentation and tutorials to establish an administration and monitoring of your computer . It will aim to collect and centralize information necessary for network administrators and colleagues.</p>
+    <h2>Servers :</h2>
+    <p>You will be able to find mainly tutorials on how to install , configure, and connect the following projects :</p>
 
     <ul>
         <li><b style="font-size: medium;">GLPI</b></li>
-      <p>GLPI est un logiciel libre de gestion de parc. Il permet d'inventorier celui-ci du simple téléphone, au serveur, en passant par les imprimantes jusqu'aux terminaux finaux. Bref tout ce qui est connecté !</br><a href="http://glpi-project.org">Site Officiel</a></p>
+      <p>GLPI is a free software asset management. It allows you to inventory phones, serverq, through printers to end- terminals. In short, everything who's on your network !</br><a href="http://glpi-project.org">Official Website</a></p>
       <li><b style="font-size: medium;">FusionInventory</b></li>
-      <p>FusionInventory permet, grâce à des agents légers, d'inventorier votre parc informatique. Selon vos horaires, désirs, envies... il rappatrie le maximum dans GLPI automatiquement.</br><a href="http://fusioninventory.org">Site Officiel</a></p>
+      <p>FusionInventory lets through light agents, to inventory your IT assets. Depending on your schedule, desires, it put maximum in GLPI automatically.</br><a href="http://fusioninventory.org">Official Website</a></p>
       <li><b style="font-size: medium;">Shinken</b></li>
-      <p>Shinken permet de monitorer vos ressources, serveurs et services. Il peut fonctionner indépendamment de GLPI ou non et vous signale toute anomalie.</br><a href="http://www.shinken-monitoring.org">Site Officiel</a></p>
+      <p>Shinken allows monitoring your resources, servers and services. It can operate independently of GLPI or not and report on any discrepancies.</br><a href="http://www.shinken-monitoring.org">Official Website</a></p>
       <li><b style="font-size: medium;">Alignak</b></li>
-      <p>Alignak permet de monitorer vos ressources, serveurs et services, ... Peut fonctionner indépendamment de GLPI. Son but principal est la stabilité.</br><a href="http://alignak-monitoring.github.io">Site Officiel</a></p>
+      <p>Alignak allows monitoring your resources, servers and services , ... Can operate independently of GLPI. Its main goal is stability.</br><a href="http://alignak-monitoring.github.io">Official Website</a></p>
       <li><b style="font-size: medium;">Glpi-monitoring</b></li>
-      <p>Ce plugin pour GLPI permet d'afficher des vues graphique des données d'un serveur de monitoring. Il permet notamment de créer et modifier vos hôtes à partir de GLPI.</br><a href="https://github.com/ddurieux/glpi_monitoring">Dépôt Officiel</a></p>
+      <p>This plugin for GLPI can display graphical views of the data of a monitoring server. It allows to create and edit your hosts, commands, catalogs from GLPI.</br><a href="https://github.com/ddurieux/glpi_monitoring">Official Website</a></p>
     </ul>
 
-    <p>Nous essaieront également de proposer des tutoriels aussi bien en anglais qu'en français.</p>
+    <p>We also try to offer tutorials in both English and French.</p>
 
-    <p>Il y aura notamment des articles sur les dernières releases des différents projets, sur leurs fonctionnalités futures, d'autres serveurs ou outils connexes, etc.</p>
+    <p>There will be also articles on the latest releases of the various projects, on future features, other servers or related tools, and more.</p>
     </div>
 </div>
 
 <div class="row">
     <div class="col-md-6">
 <div class="well">
-  <h2>Nouveautés</h2>
-{% for post in site.categories.news %}
+  <h2>News</h2>
+{% assign news=site.categories.news | where:"lang", page.lang %}
+{% for post in news %}
   <h2 class="post-title">
     <a href="{{post.url | prepend:site.baseurl | prepend:site.url}}">
       {{ post.title }}
@@ -55,14 +58,15 @@ layout: page
       {{ post.description }}
     </p>
   </div>
-  {% endfor %}
+{% endfor %}
 
 </div>
     </div>
     <div class="col-md-6">
             <div class="well">
-                <h2>Derniers tutoriels</h2>
-{% for post in site.categories.tutoriel %}
+                <h2>Last Tutorials</h2>
+{% assign tutos=site.categories.tutoriel | where:"lang", page.lang %}
+{% for post in tutos %}
   <h2 class="post-title">
     <a href="{{post.url | prepend:site.baseurl | prepend:site.url}}">
       {{ post.title }}
