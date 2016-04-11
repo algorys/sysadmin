@@ -35,16 +35,15 @@ body {
 .sidebar li {
   margin-top: .7em;
   line-height: 1em;
-  color: #00FFFF;
+  //color: #00FFFF;
 }
 
-.well-side {
-  background-color: #363244;
-  box-shadow: 0px 0px 0px 0px, 0px 8px 16px rgba(0, 0, 0, 0.2);
-  border: 0px;
-  border-radius: 6px;
+.sidebar>ul>li a {
+  color: #327EBF;
 }
-
+.sidebar>ul>li> a:hover {
+  color: #F26040;
+}
 .well {
   background-color: #FFF;
   box-shadow: 0px 0px 0px 0px, 0px 8px 16px rgba(0, 0, 0, 0.2);
