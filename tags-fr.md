@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Tags 
-lang: en
+lang: fr
 ref: tag
 ---
 

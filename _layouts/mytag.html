@@ -8,12 +8,9 @@
           <div class="well">
             <h2>Tag : <em>{{page.key}}</em></h2>
               {% for post in site.tags[page.key] %}
-              <p><a href="{{ site.baseurl | prepend:site.url }}{{ post.url }}">{{ post.title }}</a></p>
+              <p><a href="{{ site.baseurl | prepend:site.url }}{{ post.url }}">[ {{post.lang}} ] {{ post.title }}</a></p>
               {% endfor %}
           </div>
-        </div>
-        <div class="col-md-4 hidden-xs">
-          {% include sidebar.html %}
         </div>
       </div>
     </div>
