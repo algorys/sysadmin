@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Installer GLPI
+lang: fr
+ref: glpi
 modified:
 description: Comment installer glpi
 tags: [tutoriel, glpi]

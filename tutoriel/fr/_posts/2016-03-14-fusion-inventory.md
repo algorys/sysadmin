@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Fusion Inventory pour GLPI
+lang: fr
+ref: fusioninventory
 modified:
 description: tutoriel FusionInventory pour GLPI
 tags: [tutoriel, fusioninventory, glpi]

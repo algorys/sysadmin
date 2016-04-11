@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Installer Shinken
+lang: fr
+ref: shinken
 modified:
 description: Comment installer Shinken
 tags: [tutoriel, shinken, monitoring]

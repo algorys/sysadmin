@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Installation de Gilab Community
+lang: fr
+ref: gitlab
 modified:
 description: Tutoriel pour Gitlab, un github-like chez soi
 tags: [tutoriel, git]

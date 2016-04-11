@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Installer GLPI-Monitoring
+lang: fr
+ref: glpimonitoring
 modified:
 description: comment installer glpi-monitoring
 tags: [tutoriel, glpi, shinken, monitoring]

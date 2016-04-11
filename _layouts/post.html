@@ -7,9 +7,23 @@
         <div class="col-md-8">
           <div class="article">
             <ul class="nav nav-tabs">
-             <li role="presentation"><a href="{{ site.url | append:site.baseurl | append:page.url }}">FRA</a></li>
+{% assign posts=site.posts | where:"ref", page.ref | sort: 'lang' %}
+{% for post in posts %}
+  <li>
+    <a href="{{ post.url }}" class="{{ post.lang }}">{{ post.lang }}</a>
+  </li>
+{% endfor %}
+
+{% assign pages=site.pages | where:"ref", page.ref | sort: 'lang' %}
+{% for page in pages %}
+  <li role="presentation">
+    <a href="{{ page.url }}" class="{{ page.lang }}">{{ page.lang }}</a>
+  </li>
+{% endfor %}
+</ul>
+             <!--<li role="presentation"><a href="{{ site.url | append:site.baseurl | append:page.url }}">FRA</a></li>
              <li role="presentation"><a href="{{ site.url | append:site.baseurl | append:page.url }}/eng">ENG</a></li>
-            </ul>
+            </ul>-->
             <div class="well">
               <h1><a href="{{ site.url | append:site.baseurl | append:page.url }}">{{ page.title }}</a></h1>
               <div class="post-meta">

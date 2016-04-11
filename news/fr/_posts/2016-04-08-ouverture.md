@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Ouverture d'Admitoring
+lang: fr
+ref: ouverture
 modified:
 description: "Oui mais pourquoi ?"
 tags: [general]
