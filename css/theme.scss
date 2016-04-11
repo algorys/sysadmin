@@ -38,6 +38,13 @@ body {
   color: #00FFFF;
 }
 
+.well-side {
+  background-color: #363244;
+  box-shadow: 0px 0px 0px 0px, 0px 8px 16px rgba(0, 0, 0, 0.2);
+  border: 0px;
+  border-radius: 6px;
+}
+
 .well {
   background-color: #FFF;
   box-shadow: 0px 0px 0px 0px, 0px 8px 16px rgba(0, 0, 0, 0.2);
@@ -94,8 +101,8 @@ blockquote {
 //                    Links
 //********************************************************
 a {
-  color: #FB0A05;
-  font-size: medium;
+  color: #48AAFF;
+//  font-size: medium;
 }
 a:hover {
   color: #F26040;
