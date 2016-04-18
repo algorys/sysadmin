@@ -1,12 +1,12 @@
 ---
-layout: page 
+layout: page
 title: About
 
 ---
 
 # Admitoring
 
-Admitoring est encore en cours de construction...
+Admitoring is still building...
 
 ### Dark version of jekyll-clean theme
 
