@@ -8,7 +8,8 @@
           <div class="article">
             <ul class="nav nav-tabs">
             <div class="well">
-              <h1><a href="{{ site.url | append:site.baseurl | append:page.url }}">{{ page.title }}</a></h1>
+                <h1><a href="{{ site.url | append:site.baseurl | append:page.url }}">{{ page.title }}</a></h1>
+
               <div class="post-meta">
                 <div class="post-time">
                   <i class="fa fa-calendar"></i>
@@ -23,6 +24,15 @@
               <div class="post-content">
                 <div id="toc" class="toc"></div>
                 {{ content }}
+
+        <hr style="border-top:1px solid #48AAFF;">
+    <div class="share">
+          <a href="https://twitter.com/intent/tweet?text={{ site.url }}{{ page.url }}" title="Share on Twitter">
+              <span>
+                  <i class="fa fa-twitter-square"></i> Tweet
+              </span>
+          </a>
+    </div>
               </div>
               {% if page.comments %}
               <div id="disqus_thread">
