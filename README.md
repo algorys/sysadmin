@@ -1,14 +1,14 @@
 Admitoring
 ============
 
-Ce dépôt sert à générer le site [http://algorys.github.io/sysadmin](http://algorys.github.io/sysadmin)
+This repos is used to generate the website [http://algorys.github.io/sysadmin](http://algorys.github.io/sysadmin)
 
-Ce site fournit des tutoriels pour administrer et superviser un réseau grâce aux projets suivants :
+Admitoring provides documentation and tutorials to establish an administration and monitoring of your computer.
 
-* [GLPI](http://glpi-project.org) : Gestionnaire libre de parc informatique.
-* [FusionInventory](fusioninventory.org) : FusionInventory permet d'inventorier automatiquement son parc informatique.
-* [Shinken](http://www.shinken-monitoring.org/) : Framework de monitoring en python utilisant les plugins nagios.
-* [Alignak](http://alignak-monitoring.github.io) : Solution de monitoring prévu pour des parcs informatique plus larges que Shinken.
-* [glpi-monitoring](https://github.com/ddurieux/glpi_monitoring) : plugin pour GLPI permettant d'afficher les données d'un serveur Shinken, Nagios ou Alignak au sein de GLPI.
+* [GLPI](http://glpi-project.org) : free software asset management.
+* [FusionInventory](fusioninventory.org) : FusionInventory lets through light agents, to inventory your IT assets.
+* [Shinken](http://www.shinken-monitoring.org/) : Shinken allows monitoring your resources, servers and services. It can operate independently of GLPI or not and report on any discrepancies.
+* [Alignak](http://alignak-monitoring.github.io) : Alignak allows monitoring your resources, servers and services , ... Can operate independently of GLPI. Its main goal is stability.
+* [glpi-monitoring](https://github.com/ddurieux/glpi_monitoring) : This plugin for GLPI can display graphical views of the data of a monitoring server. It allows to create and edit your hosts, commands, catalogs from GLPI.
 
-Toutes ces applications peuvent interagir entre elles, et d'autres peuvent être ajoutés si besoin.
+The goal is also to bring a “synergy” in your park for all those applications communicate together and share their data.
