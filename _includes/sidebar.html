@@ -1,5 +1,9 @@
 <div class="sidebar ">
+  {% if page.lang == "en" %}  
   <h2>Recent Posts</h2>
+  {% else %}
+  <h2>Articles Récents</h2>
+  {% endif %}
   {% assign posts=site.posts | where:"lang", page.lang %}
   <ul>
     {% for post in posts limit:5 %}
@@ -18,5 +22,11 @@
 </div>
 
 <div class="sidebar">
+  <h2>
+  {% if page.lang == "en" %}
   <a href="{{ site.baseurl | prepend:site.url }}/tools.html">Additional tools</a>
+  {% else %}
+  <a href="{{ site.baseurl | prepend:site.url }}/tools-fr.html">Outils Annexes</a>
+  {% endif %}
+  </h2>
 </div>

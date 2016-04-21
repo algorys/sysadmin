@@ -7,7 +7,8 @@ ref: tools
 
 <div class="page-content wc-container">
   <div class="post">
-    <h1>Additional Tools</h1>  
+    <h1>Additional Tools</h1>
+    <p>The tutorials below provide new tools to manage your IT infrastructure.</p>
     {% assign tools=site.categories.tool | where:"lang", page.lang %}
     {% for post in tools %}
     <h2 class="post-title">

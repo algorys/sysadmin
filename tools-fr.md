@@ -8,6 +8,9 @@ ref: tools
 <div class="page-content wc-container">
   <div class="post">
     <h1>Outils Annexes</h1>  
+    <p>
+    Les tutoriels ci-dessous apportent de nouveaux outils pour administrer votre parc informatique.
+    </p>
     {% assign tools=site.categories.tool | where:"lang", page.lang %}
     {% for post in tools %}
     <h2 class="post-title">
