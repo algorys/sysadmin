@@ -175,6 +175,16 @@ div.post-meta {
 //    float: right;
   }
 }
+table {
+  margin-bottom: 6px;
+}
+td, th {
+    border: solid 1px black;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
 .post-footer {
 
   height: 40px;
