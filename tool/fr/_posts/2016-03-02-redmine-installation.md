@@ -120,7 +120,7 @@ Voilà rvm est installé. Comme dit dans l'installation, pour commencer à l'uti
 source /usr/local/home/redmine/.rvm/scripts/rvm
 ```
 
-Maintenant que vous avez rvm d'installé, vous pouvez voir les différetnes versions de Ruby disponibles en tapant `rvm list known`. Il ne reste plus qu'à lui indiquer quel version de ruby vous souhaitez installer grâce à la commande :
+Maintenant que vous avez rvm d'installé, vous pouvez voir les différentes versions de Ruby disponibles en tapant `rvm list known`. Il ne reste plus qu'à lui indiquer quel version de ruby vous souhaitez installer grâce à la commande :
 
 ```bash
 rvm install 2.1.5
