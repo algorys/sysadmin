@@ -30,6 +30,7 @@ Voici le schéma global de alignak-backend:
 
 <figure>
     <img src="/images/alignak-backend/alignak_backend_timeseries.png" alt="">
+    <figcaption>Alignak-Backend</figcaption>
 </figure>
 
 
