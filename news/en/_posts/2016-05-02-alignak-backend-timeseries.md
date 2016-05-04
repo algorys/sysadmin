@@ -29,7 +29,7 @@ The 2 timeseries databases are:
 This is the global schema of alignak-backend works:
 
 <figure>
-    <img src="/images/alignak-backend/alignak_backend_timeseries.png" alt="">
+    <img src="{{ site.url }}/images/alignak-backend/alignak_backend_timeseries.png" alt="">
     <figcaption>Alignak-Backend</figcaption>
 </figure>
 
