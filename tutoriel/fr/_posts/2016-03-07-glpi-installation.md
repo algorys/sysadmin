@@ -135,7 +135,7 @@ Enregistrez et quittez.
 Maintenant, si vous ouvrez votre navigateur sur l'adresse suivante : [http://glpi.local.fr](http://glpi.local.fr), vous devriez tomber sur l'interface de GLPI :
 
 <figure>
-    <img src="/images/glpi/glpi_accueil.png" alt="">
+    <img src="{{ site.url }}/images/glpi/glpi_accueil.png" alt="">
     <figcaption>GLPI - install.php</figcaption>
 </figure>
 
@@ -158,7 +158,7 @@ Cliquez ensuite sur le bouton **Réessayer**.
 Si tout va bien, vous devriez avoir tous les voyants au vert :
 
 <figure>
-    <img src="/images/glpi/glpi_setup.png" alt="">
+    <img src="{{ site.url }}/images/glpi/glpi_setup.png" alt="">
     <figcaption>GLPI Setup</figcaption>
 </figure>
 
@@ -171,7 +171,7 @@ Cliquez sur **Continuer**.
 Maitenant, GLPI va vous demander les données de la base MySQL. Si votre serveur MySQL est sur la même machine que GLPI, vous devrez mettre _localhost_ en face de Serveur MySQL. Voici à quoi cela devrait ressembler
 
 <figure>
-    <img src="/images/glpi/glpi_bdd.png" alt="">
+    <img src="{{ site.url }}/images/glpi/glpi_bdd.png" alt="">
     <figcaption>GLPI - Base de Données</figcaption>
 </figure>
 
@@ -180,7 +180,7 @@ Cliquez sur **Continuer** puis au prochain écran sélectionnez la base que vous
 Enfin GLPI devrait vous dire que la base a bien été initialisée :
 
 <figure>
-    <img src="/images/glpi/glpi_bdd_ok.png" alt="">
+    <img src="{{ site.url }}/images/glpi/glpi_bdd_ok.png" alt="">
     <figcaption>GLPI - Base de Données initialisée !</figcaption>
 </figure>
 
@@ -191,7 +191,7 @@ Vous êtes arrivé à la fin de l'installation.
 GLPI vous donne plusieurs informations à la fin de l'installation :
 
 <figure>
-    <img src="/images/glpi/glpi_install_finie.png" alt="">
+    <img src="{{ site.url }}/images/glpi/glpi_install_finie.png" alt="">
     <figcaption>GLPI - Base de Données initialisée !</figcaption>
 </figure>
 

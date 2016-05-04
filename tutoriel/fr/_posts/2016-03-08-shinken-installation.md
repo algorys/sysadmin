@@ -220,7 +220,7 @@ modules     auth-cfg-pasword,SQLitedb
 Félicitations ! Votre interface **Webui** est configurée. Si tous les démons de Shinken ont bien été redémarrés, vous devriez voir la page suivante en vous rendant sur l'adresse `http://ip_serveur:7767` :
 
 <figure>
-    <img src="/images/shinken/shinken_webui.png" alt="">
+    <img src="{{ site.url }}/images/shinken/shinken_webui.png" alt="">
     <figcaption>Shinken - Écran de connexion Webui</figcaption>
 </figure>
 
@@ -263,7 +263,7 @@ sudo service shinken restart
 Félicitations ! Votre interface **Webui2** est configurée. Si vous vous rendez sur `http://ip_serveur:7767` avec votre navigateur, vous devriez voir la page suivante :
 
 <figure>
-    <img src="/images/shinken/shinken_webui2.png" alt="">
+    <img src="{{ site.url }}/images/shinken/shinken_webui2.png" alt="">
     <figcaption>Shinken - Écran de connexion Webui2</figcaption>
 </figure>
 
