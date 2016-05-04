@@ -51,7 +51,7 @@ sudo apt-get install prosody
 
 # Configuration
 
-Vous allez devoir maintenant configurer Prosody. La première chose à faire est de créer un _hôte virtuel_ dans le fichier de configuration globale. Les fichiers de configuration de Prosody sont `.lua`.
+Vous allez devoir maintenant configurer Prosody. La première chose à faire est de créer un _hôte virtuel_ dans un fichier de configuration. Les fichiers de configuration de Prosody portent l'extention `.lua`.
 
 Allez dans le répertoire de Prosody et regarder ce qui se trouve dans le dossier :
 
@@ -72,7 +72,9 @@ Remplacez `mail.fr` par le nom de votre domaine afin de correspondre à votre co
 
 
 ```bash
+# Si le dossier n'existe pas
 sudo mkdir conf.avail
+# Créez le fichier de configuration
 sudo vi conf.avail/mail.fr.cfg.lua
 ```
 
@@ -94,7 +96,7 @@ Vous pouvez aussi désactiver l'hôte en rajoutant la ligne `enabled = false`.
 
 Les `Components` sont des modules que vous pouvez rajouter au serveur prosody. Dans ce cas, on défini une `MUC` ("Multi-user Chat" : en somme une "room"), avec une adresse correspondante (`salons.mail.fr`).
 
-Le fait de mettre `admin` pour `restrict_room_creation` autorise seulement les administrateurs de Prosody à créer des salons **persistants** ! Cela veut dire que les autres utilisateurs ne pourront que créer des conférences temporaires. La plupart des clients XMPP proposent ensuite aux administrateurs de configurer les salons selon leurs envies. Si vous ne voulez pas de cette fcontionnalité, supprimer simplement la ligne.
+Le fait de mettre `admin` pour `restrict_room_creation` autorise seulement les administrateurs de Prosody à créer des salons **persistants** ! Cela veut dire que les autres utilisateurs ne pourront que créer des conférences temporaires. La plupart des clients XMPP proposent ensuite aux administrateurs de configurer les salons selon leurs envies. Si vous ne voulez pas de cette fonctionnalité, supprimer simplement la ligne.
 
 
 # Authentification
@@ -110,13 +112,13 @@ Prosody peut gérer l'authentification grâce à votre serveur AD. Comme dit plu
 
 ## Cyrus et Saslauthd
 
-Nous allons donc installer Cyrus :
+Pour gérer l'authentification, nous aurons besoin de [Cyrus](https://cyrusimap.org/mediawiki/index.php/Cyrus_SASL). Voici comment l'installer :
 
 ```bash
 sudo apt-get install lua-cyrussasl sasl2-bin
 ```
 
-Puis nous allons l'indiquer dans notre configuration (`vi conf.avail/mail.fr.cfg.lua`)  et votre fichier devra ressembler à cela :
+Puis nous allons l'indiquer dans notre configuration (`vi conf.avail/mail.fr.cfg.lua`) et votre fichier devra ressembler à cela :
 
 ```lua
 --- Nom de l'hôte virtuel ---
@@ -266,7 +268,7 @@ Le but ici est d'avoir un certificat faisant autorité (`localhost`) et qui sign
 
 ## Installer Lua-expat 1.3
 
-i vous avez un problème de version pour lua-expat, il vous faut rajouter les dépôt universe de **vivid** (`sudo vi /etc/apt/sources.list`) :
+Si vous avez un problème de version pour lua-expat, il vous faut rajouter les dépôt universe de **vivid** (`sudo vi /etc/apt/sources.list`) :
 
 ```conf
 deb http://us.archive.ubuntu.com/ubuntu vivid main universe
@@ -289,7 +291,7 @@ Maintenant afin de pouvoir générer notre certificat ssl pour notre hôte virtu
 sudo prosodyctl cert request mail.fr
 ```
 
-Tapez `Entrée` pour valider les données par défaut ou rentrez de nouvelles informations. Cela devrait reseembler à quelque chose comme ça :
+Tapez `Entrée` pour valider les données par défaut ou rentrez de nouvelles informations. Cela devrait ressembler à quelque chose comme ça :
 
 ```bash
 Choose key size (2048):                     
@@ -313,7 +315,7 @@ Certificate request written to /var/lib/prosody/mail.fr.req
 
 ## Signer avec le CA
 
-Le certificat d'autorité va mainentnat nous servir à signer et créer notre clé :
+Le certificat d'autorité va mainitenant nous servir à signer et créer notre clé :
 
 ```bash
 sudo openssl x509 -req -days 730 -in /var/lib/prosody/mail.fr.req -CA /etc/prosody/certs/localhost.crt -CAkey /etc/prosody/certs/localhost.key -set_serial 01 -out /var/lib/prosody/mail.fr.crt
@@ -329,7 +331,7 @@ Getting CA Private Key
 
 ## Ajouter le certificat
 
-Maitenant que nous avons un beau certificat auto-signé, nous pouvons le rajouter à notre hôte virtuel. Ouvrez le fichier de configuration (`sudo vi conf.avail/mail.fr.cfg.lua`) et rajoutez-le comme suit :
+Maintenant que nous avons un beau certificat auto-signé, nous pouvons le rajouter à notre hôte virtuel. Ouvrez le fichier de configuration (`sudo vi conf.avail/mail.fr.cfg.lua`) et rajoutez-le comme suit :
 
 ```lua
 ssl = {
@@ -340,7 +342,7 @@ ssl = {
 
 > **Note :** faites bien attention rajouter ces lignes après la déclaration de `VirtualHost`. Si vous les rajouter avant, cela ne marchera pas.
 
-Maintenant, vous pouvez redémarrer Prosody pour appliquer les chnagements :
+Maintenant, vous pouvez redémarrer Prosody pour appliquer les changements :
 
 ```bash
 sudo service prosody restart
