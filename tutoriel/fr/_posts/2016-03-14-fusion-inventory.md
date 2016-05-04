@@ -324,10 +324,12 @@ En fonction de la plage que vous avez définie, la vitesse de votre réseau et l
 
 ## Voir le matériel trouvé
 
-Once the agent has finish, your devices is added automatically in GLPI. 
-FusionInventory must (in the logs) display the message:
 
 ```
+YYYY-DD-MM HH:MM:SS Ok  Ts que l'agent a terminé, vos matériels sont ajoutés automatiquement à GLPI.
+FusionInventory devrait afficher (dans les logs) le message :
+
+```bash
 YYYY-DD-MM HH:MM:SS Ok  Total Found:XX Created:XX Updated:X
 ```
 
