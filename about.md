@@ -4,9 +4,9 @@ title: About
 
 ---
 
-# Admitoring
+# Sysadmin.cool
 
-Admitoring is still building...
+Sysadmin.cool is still building...
 
 ### Dark version of jekyll-clean theme
 

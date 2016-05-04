@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Ouverture d'Admitoring
+title: Ouverture de Sysadmin.cool
 lang: fr
 ref: ouverture
 modified:

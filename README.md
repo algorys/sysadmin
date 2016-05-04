@@ -1,9 +1,9 @@
-Admitoring
+Sysadmin.cool
 ============
 
 This repos is used to generate the website [http://algorys.github.io/sysadmin](http://algorys.github.io/sysadmin)
 
-Admitoring provides documentation and tutorials to establish an administration and monitoring of your computer.
+Sysadmin.cool provides documentation and tutorials to establish an administration and monitoring of your computer.
 
 * [GLPI](http://glpi-project.org) : free software asset management.
 * [FusionInventory](fusioninventory.org) : FusionInventory lets through light agents, to inventory your IT assets.
