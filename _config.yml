@@ -32,7 +32,7 @@ disqus: algorysblog
 comments: true
 index:
   en: ""
-  fr: "index-fr/"
+  fr: "index-fr"
 permalink: /:year/:month/:title
 
 # Enable for using pages, more details are here: http://jekyllrb.com/docs/pagination/
