@@ -2,7 +2,7 @@
 layout: post
 title: Big rework alignak
 lang: en
-ref: alignak
+ref: alignak-bigrework
 modified:
 description: "Big rework alignak"
 tags: [alignak]

@@ -2,7 +2,7 @@
 layout: post
 title: Gros travail dans alignak
 lang: fr
-ref: alignak
+ref: alignak-bigrework
 modified:
 description: "Gros travail dans alignak"
 tags: [alignak]

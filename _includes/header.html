@@ -49,7 +49,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{{site.baseurl | prepend:site.url}}/">{{ site.name }}</a>
+	<a class="navbar-brand" href="{{site.baseurl | prepend:site.url}}/{{ site.index[page.lang] }}">{{ site.name }}</a>
         <span style="float: inherit;">
           <ul class="nav nav-tabs">
           {% assign posts=site.posts | where:"ref", page.ref | sort: 'lang' %}
