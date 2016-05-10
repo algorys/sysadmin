@@ -49,4 +49,4 @@ kramdown:
   hard_wrap: true
 encoding: utf-8
 
-exclude: ['README.md', 'LICENSE']
+exclude: ['README.md', 'LICENSE', 'CONTRIBUTE.md']

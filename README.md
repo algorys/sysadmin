@@ -12,3 +12,7 @@ Sysadmin.cool provides documentation and tutorials to establish an administratio
 * [glpi-monitoring](https://github.com/ddurieux/glpi_monitoring) : This plugin for GLPI can display graphical views of the data of a monitoring server. It allows to create and edit your hosts, commands, catalogs from GLPI.
 
 The goal is also to bring a “synergy” in your park for all those applications communicate together and share their data.
+
+## Copntribute
+
+If you want to contribute to this blog, please read [How to contribute](CONTRIBUTE.md).
