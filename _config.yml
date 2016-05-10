@@ -40,6 +40,9 @@ permalink: /:year/:month/:title
 
 #highlighter: rouge
 
+gems:
+  - jekyll-sitemap
+
 markdown: kramdown
 kramdown:
   input: GFM # Enable GitHub Flavored Markdown (fenced code blocks)
