@@ -15,7 +15,7 @@ share:
 date: 2016-05-10T08:21:50+01:00
 ---
 
-Sebastien Coavoux and David Durieux has worked hard these last weeks in Alignak and they have made these modifications:
+Sebastien Coavoux and David Durieux have worked hard these last weeks in Alignak and they have made these modifications:
 
 * Use uuid in all objects instead of id
 * Unlink almost all items: attribute of object are no instance of other objects except for a few cases (commandcall / check_period and acknowledgemnt)
