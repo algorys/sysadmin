@@ -2,7 +2,7 @@
 layout: post
 title: FusionInventory and use mirrors for software deployment
 lang: en
-ref: fusioninventory
+ref: fusioninventory-mirrors
 modified:
 description: How to use mirrors for software deployment with FusionInventory
 tags: [tutorial, fusioninventory, glpi]
@@ -19,15 +19,11 @@ date: 2016-05-18T19:08:05+01:00
 
 You can deploy with p2p, but if you can't / don't want use this on multi-sites, you can use mirrors.
 
-
 ## What is mirrors?
 
 A mirror as a HTTP server where an agent try to get the file(s) required to deploy a software.
 
-
-
 ## How it works ?
-
 
 ### In GLPI
 
