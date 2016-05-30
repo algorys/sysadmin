@@ -15,6 +15,15 @@
                   <i class="fa fa-calendar"></i>
                   <time>{{ page.date | date_to_string }}</time>
                 </div>
+				<div class="post-time">
+					{% if page.lang == "en" %} 
+                    <span class="author">by <b>{{ page.author }}</b></span>
+					{% elsif page.lang == "fr" %}
+                    <span class="author">par <b>{{ page.author }}</b></span>
+					{% else %}
+					<span class="author">{{ page.lang }}</span>
+					{% endif %}
+				</div>
                 <ul>
                   {% for tag in page.tags %}
                     <li><a href="{{ site.url | append:site.baseurl }}/tag/{{ tag }}">{{ tag }}</a></li>
