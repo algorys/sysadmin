@@ -10,6 +10,7 @@ image:
   feature:
   credit:
   creditlink:
+author: algorys
 comments: true
 share:
 date: 2016-03-02T12:00:05+01:00
