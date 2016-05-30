@@ -10,6 +10,7 @@ image:
   feature:
   credit:
   creditlink:
+author: ddurieux
 comments: true
 share:
 date: 2016-05-10T08:21:50+01:00
