@@ -10,7 +10,7 @@ image:
   feature:
   credit:
   creditlink:
-authir: algorys
+author: algorys
 comments: true
 share:
 date: 2016-03-07T16:52:05+01:00
@@ -69,7 +69,7 @@ Décompressez l'archive téléchargée dans la racine de votre serveur Web (ici 
 sudo tar xzf glpi-0.90.1.tar.gz -C /var/www
 ```
 
-> Ce tutoriel a été fait pour la version 0.90.1 de GLPI, il faudra donc adapter la commande en fonction de la version téléchargée.
+> Ce tutoriel a été fait pour la version 0.90.X de GLPI, il faudra donc adapter la commande en fonction de la version téléchargée.
 
 Donnez ensuite les droits à l'utilisateur qui gérera le serveur, ici `www-data` :
 
@@ -145,9 +145,9 @@ Vous n'avez plus qu'à suivre les différentes étapes :
 * Sélectionnez votre language et cliquez sur **OK**.
 * Acceptez ensuite les Termes et Conditions et la Licence.
 * Après GLPI vous demandera si c'est une nouvelle version ou une mise à jour. Cliquez sur **Installer**. (Comme vous l'avez peut-être deviné, les mises à jour de GLPI se feront quasiment de la même manière.)
-* Enfin GLPI va vérifier votre environnement pour voir si tout est correct. Normalement, vous devriez avoir pas mal d'alertes signalées par des triangles rouges. Cela indique que GLPI n'a pas encorte tout ce qu'il veut. Notament certaines dépendances et certains droits.
+* Enfin GLPI va vérifier votre environnement pour voir si tout est correct. Normalement, vous devriez avoir pas mal d'alertes signalées par des triangles rouges. Cela indique que GLPI n'a pas encore tout ce qu'il veut. Notamment certaines dépendances et certains droits.
 
-Pour régler ce problème, exécutez les commandes suivantes :
+Pour régler ce problème, essayez d'exécuter les commandes suivantes :
 
 ```bash
 sudo apt-get install php5-mysql php5-gd
@@ -169,7 +169,7 @@ Cliquez sur **Continuer**.
 
 ## Configuration de la base de données
 
-Maitenant, GLPI va vous demander les données de la base MySQL. Si votre serveur MySQL est sur la même machine que GLPI, vous devrez mettre _localhost_ en face de Serveur MySQL. Voici à quoi cela devrait ressembler
+Maintenant, GLPI va vous demander les données de la base MySQL. Si votre serveur MySQL est sur la même machine que GLPI, vous devrez mettre _localhost_ en face de Serveur MySQL. Voici à quoi cela devrait ressembler :
 
 <figure>
     <img src="{{ site.url }}/images/glpi/glpi_bdd.png" alt="">
