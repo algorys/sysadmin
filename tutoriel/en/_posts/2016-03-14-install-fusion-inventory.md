@@ -297,7 +297,7 @@ If you go back in homepage of tasks management, you should see the task you have
 When you go in **Tasks => Monitoring / logs**, you should see your task with many step names below and with zeros in front of each name. 
 You can see the task is inactive for the moment. Now, the goal is to put your task in _Prepared_!
 
-To do this, go in menu **Configuration => Task management**. 
+To do this, go in menu **Setup => Automatic actions**. 
 In this page, you can see all tasks GLPI will run (core and plugins). 
 Search the task named **taskscheduler** and click on it!
 
