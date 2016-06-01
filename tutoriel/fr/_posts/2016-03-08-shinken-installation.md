@@ -171,7 +171,7 @@ Et initialisez la CLI de Shinken pour générer le fichier `.ini` contenant les 
 ```bash
 shinken --init
 ```
-> **Note :** toutes les commandes `shinken` doivent être lancées en tant qu'utilisateur `shinken` !
+> **Important :** toutes les commandes `shinken` doivent être lancées en tant qu'utilisateur `shinken` !
 
 Vous devriez avoir la sortie suivante :
 
