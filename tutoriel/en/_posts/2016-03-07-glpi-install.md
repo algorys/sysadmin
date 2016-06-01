@@ -55,7 +55,7 @@ Your database is ready for GLPI.
 
 # GLPI
 
-## Get Archive
+## Get Archive
 
 To retrieve the latest version of GLPI, simply go on [download page](http://www.glpi-project.org/spip.php?article41) and take the link to the latest stable version.
 
