@@ -18,8 +18,8 @@ date: 2016-03-14T13:20:05+01:00
 
 # Introduction
 
-[FusionInventory for GLPI](https://github.com/fusioninventory/fusioninventory-for-glpi) is a GLPI plugin used to collect data with agents [FusionInventory](http://fusioninventory.org/) installed on devices. 
-It update data in GLPI inventory and it's automatic.
+[FusionInventory for GLPI](https://github.com/fusioninventory/fusioninventory-for-glpi) is a GLPI plugin used to collect data with agents [FusionInventory](http://fusioninventory.org/) installed on devices. It update data in GLPI inventory and it's automatic.
+
 Agents can :
 
 * inventory the hardware and software of computers, servers, virtual machines
@@ -30,14 +30,13 @@ Agents can :
 * wake on lan (wake a computer remotely)
 * ESX servers inventoy (on each ESX server or through vcenter)
 
-The agents can be installed with GPO or with scripts and run on many operating systems (Windows, Mac OS X, Linux, *BSD...).
+The agents can be installed with GPO or with scripts and run on many operating systems (Windows, Mac OS X, Linux, BSD...).
 
 This process can save time and money to make inventory and so the "Sysadmin" life.
 
 # prerequisites
 
-To use this tutorial, you need a server [GLPI](/tuto/glpi-installation/) and it's better to have the version `0.90.1` (the last stable release). 
-Anyway, other versions of GLPI can work.
+To use this tutorial, you need a server [GLPI](/2016/03/glpi-install) and it's better to have the version `0.90.1` (the last stable release). Anyway, other versions of GLPI can work.
 
 * A `root` / `administrator`  access on this server needed.
 * You need too one (or many) Linux server/client to install the agent.
@@ -61,10 +60,10 @@ sudo cp -R fusioninventory/ /var/www/glpi/plugins/
 
 Your folder is ready!
 
-
 ## Developer method with git
 
 To get the plugin FusionInventory for GLPI, you can use git. Install it if not yet:
+
 ```bash
 sudo apt-get install -y git
 ```
@@ -83,16 +82,14 @@ Your folder is ready!
 # Activate the plugin
 
 Go on web interface of GLPI, log in and go in menu **Configuration => Plugins**. 
+
 Click on **Install** then on **Activate**. Your plugin is now ok.
 
-Now, we need configure it. 
-It's not easy to find, go in mernu **Administration => Entities => Root entity** and click on tab `Fusioninventory`. 
+Now, we need configure it. It's not easy to find, go in menu **Administration => Entities => Root entity** and click on tab `Fusioninventory`. 
 
 > `Root entity` is the main entity by default in GLPI. If your configuration is different, apply changes with it.
 
-In this form, fill the field `URL service access` with your url (or with you IP. Check the url is ok and work!). 
-The url to fill is GLPI url, so url must stop to GLPI (example : http://ipserver/glpi).
-Then save!
+In this form, fill the field `URL service access` with your url (or with you IP. Check the url is ok and work!). The url to fill is GLPI url, so url must stop to GLPI (example : http://ipserver/glpi). Then save!
 
 Congratulations, your plugin is ready.
 
@@ -185,7 +182,7 @@ constant data installation directory: /usr/local/share/fusioninventory
 variable data installation directory: /usr/local/var/fusioninventory
 ```
 
-And after `make install`, you will have an import information: where find the agent configuration file!
+After `make install`, you will have an import information: where find the agent configuration file!
 
 ```bash
 if [ -f //usr/local/etc/fusioninventory/agent.cfg ]; then \
@@ -310,7 +307,7 @@ One on the page of task **taskscheduler**, click on **Run**!
 If you go back on your FusionInventory task, in tab **Monitoring / Logs**, it should be in **Prepared**! 
 If not, you can select above the **Refresh interval** of tasks. In most cases, 5 minutes is enough.
 
-Now, go backon your terminal and run the agent:
+Now, go back on your terminal and run the agent:
 
 ```
 sudo fusioninventory-agent
@@ -324,8 +321,7 @@ Depend on the IP range defined, your network speed and the number of devices to 
 
 ## See found devices
 
-Une fois que l'agent a fini son petit boulot, votre matériel a du être ajouté automatiquement dans GLPI. 
-FusionInventory doit d'ailleurs (dans les logs) vous afficher le message suivant :
+Once agent finish his job, your equipment had to be added automatically in GLPI. FusionInventory must also (in logs) display the following message:
 
 ```
 YYYY-DD-MM HH:MM:SS Ok  Total Found:XX Created:XX Updated:X
@@ -350,7 +346,7 @@ Congratulations, you have done the major part of job!
 
 Obviously, this is really nice, but run agent manually on GLPI and on Shinken, it's not very usefull... so we need automate the process. 
 If you have search in all the web like me to find tutorials about this plugin, you certainly have same problem. 
-In fact, there is a solution on the [official wiki](http://wiki.glpi-project.org/doku.php?id=en:config:crontab) but it's not reasy to find.
+In fact, there is a solution on the [official wiki](http://wiki.glpi-project.org/doku.php?id=en:config:crontab) but it's not easy to find.
 
 We will define 2 things:
 
@@ -375,14 +371,14 @@ Save and quit.
 
 ## Cron task for GLPI
 
-Like said on the documentation above, we only need edit the cron of **web server user**  run GLPI! 
+Like said on the documentation above, we only need edit the cron of **web server user** run GLPI! 
 If you do on another user, it will not works. Be carefull, we need `php5-cli`:
 
 ```bash
 sudo apt-get install php5-cli
 ```
 
-One done, edit the cron of user:
+Once done, edit the cron of user:
 
 ```bash
 sudo crontab -u www-data -e
