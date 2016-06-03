@@ -31,13 +31,13 @@ Les agents permettent :
 * l'inventaire des serveurs ESX (sur chaque hote ESX ou via le vcenter)
 
 
-Les agents peuvent être déployés par stratégie (GPO) ou via des scripts et fonctionnent sur la plupart des OS (Windows, Mac OS X, Linux, *BSD...).
+Les agents peuvent être déployés par stratégie (GPO) ou via des scripts et fonctionnent sur la plupart des OS (Windows, Mac OS X, Linux, BSD...).
 
 Ce genre de processus peut faciliter grandement l'inventaire de votre parc informatique et donc la vie des "Sysadmin".
 
 # Prérequis
 
-Pour suivre ce tutoriel, il vaut mieux avoir un serveur [GLPI](/tuto/glpi-installation/) et de préférence en version `0.90.1` (donc à jour). 
+Pour suivre ce tutoriel, il vaut mieux avoir un serveur [GLPI](/2016/03/glpi-installation) et de préférence en version `0.90.1` (donc à jour). 
 Cependant les autres versions de GLPI devraient avoir une configuration quasi similaire.
 
 * Un accès `root` / `administrateur` sur ce serveur sera nécessaire.
@@ -66,6 +66,7 @@ Voilà votre dossier est prêt !
 ## Méthode développeur avec git
 
 Pour récupérer le plugin FusionInventory pour GLPI, vous pouvez passez par Git. Installez-le si ce n'est pas déjà fait :
+
 ```bash
 sudo apt-get install -y git
 ```
@@ -86,8 +87,7 @@ Voilà votre dossier est prêt !
 Allez sur l'interface Web de GLPI, connectez-vous et rendez-vous dans **Configuration => Plugins**. 
 Cliquez sur **Installer** puis sur **Activer**. Votre plugin devrait maintenant être opérationnel.
 
-Il faut maintenant le configurer. 
-C'est un peu caché, il suffit d'aller dans **Administration => Entités => Root entity** et de cliquer sur l'onglet `Fusioninventory`. 
+Il faut maintenant le configurer. C'est un peu caché, il suffit d'aller dans **Administration => Entités => Root entity** et de cliquer sur l'onglet `Fusioninventory`. 
 
 > `Root entity` est normalement l'entité principale par défaut dans GLPI. Si votre configuration diffère, appliquez les changements en conséquence.
 
@@ -186,7 +186,7 @@ constant data installation directory: /usr/local/share/fusioninventory
 variable data installation directory: /usr/local/var/fusioninventory
 ```
 
-Et à la fin de `make install`, vous devriez avoir une information très importante : où se trouve le fichier de configuration de l'agent !
+A la fin de `make install`, vous devriez avoir une information très importante : où se trouve le fichier de configuration de l'agent !
 
 ```bash
 if [ -f //usr/local/etc/fusioninventory/agent.cfg ]; then \
@@ -338,13 +338,13 @@ Si ce n'est pas le cas ou que le plugin vous indique le message `Import Denied`,
 En effet, FusionInventory a des règles par défaut définies dans **Règles => Règles d'import et de liaison des matériels**. 
 Votre inventaire peut avoir réussi, mais FusionInventory ne les a pas "validé" et les a mis dans une sorte de blacklist dans **Règles => Matériels ignorés à l'import**.
 
-Si le plugin vous a bien importé votre matériel, vous n'allez pas le retrouver directement dans **Parc**. 
+Lorsque le plugin vous a bien importé votre matériel, vous n'allez pas le retrouver directement dans **Parc**. 
 Il faut que vous alliez dans **Parc => Equipement non-géré** et là surprise, vous avez tous vos équipements trouvés !
 
 Si vous considérez que tout ce matériel est (re)connu et va vous servir pour votre inventaire, vous pouvez l'importer en le sélectionnant et en indiquant le **type** d'équipement, sinon GLPI refusera de vous les importer (normal car il ne sera pas où le ranger). 
 Une fois les équipements _typés_, re-sélectionnez-les puis faites **Actions** et **Import**.
 
-Si maintenant vous allez voir dans **Ordinateurs** (ou autre en fonction de ce que vous avez importé), vos équipements sont bien là avec déjà pas mal de données pré-remplies. 
+Maintenant vous pouvez aller voir dans **Ordinateurs** (ou autre en fonction de ce que vous avez importé), vos équipements sont bien là avec déjà pas mal de données pré-remplies. 
 Vous pouvez d'ailleurs ensuite dire à GLPI de protéger les données déjà importées et de ne plus y toucher (regardez dans les `verrous (champs)`) !
 
 Félicitations, vous avez fait le plus gros du boulot !
