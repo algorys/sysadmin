@@ -5,7 +5,7 @@ lang: en
 ref: fusioninventory-mirrors
 modified:
 description: How to use mirrors for software deployment with FusionInventory
-tags: [tutorial, fusioninventory, glpi]
+tags: [tutoriel, fusioninventory, glpi]
 image:
   feature:
   credit:

@@ -5,7 +5,7 @@ lang: fr
 ref: fusioninventory-mirrors
 modified:
 description: Comment utiliser les miroirs pour le déploiement d'application avec FusionInventory
-tags: [tutorial, fusioninventory, glpi]
+tags: [tutoriel, fusioninventory, glpi]
 image:
   feature:
   credit:
