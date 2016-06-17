@@ -16,6 +16,8 @@ share:
 date: 2016-06-17T13:20:05+01:00
 ---
 
+# WIP : Tutorial in progress
+
 # Introduction
 
 Alignak is a monitoring solution. This solution is used to check your IT (or over) and to be informed about problems and performances degradation (mail, SMS, XMPP…). It can be used from small environments to very large (multi-datacenter, fail-over, load-balancing).
@@ -24,8 +26,8 @@ Alignak is a monitoring solution. This solution is used to check your IT (or ove
 
 During this tutorial, we'll install the following servers:
 
-* Alignak: **TODO: add description**
-* Alignak-Backend: **TODO: add description**
+* Alignak: daemons of Alignak.
+* Alignak-Backend: backend of Alignak.
 * Alignak-Webui: WebUI for Alignak Backend.
 
 These servers require a minimum knowledge in Linux and be resourceful. 
@@ -35,6 +37,8 @@ Following installations are made with **git** (to get the last fixed) but for ea
 * `pip install alignak`
 * `pip install alignak-backend`
 * `pip install alignak-webui`
+
+In this case, steps of installations are not yet required (like `sudo python setup.py install`).
 
 **Be carefull, do not mix installations type !**
 
@@ -107,6 +111,7 @@ You must give rights to certain folders:
 sudo chown -R alignak:alignak /usr/local/var/run/alignak
 sudo chown -R alignak:alignak /usr/local/var/log/alignak
 ```
+
 Now connect with _alignak_ and run **alignak** daemons:
 
 ```bash
@@ -200,14 +205,12 @@ Then go back to our folder for apps and create new symlink:
 
 ```bash
 cd ~/app; mkdir alignak-webui; cd alignak-webui
-#cp ~/repos/alignak-webui/etc/settings.cfg settings.cfg
+ln -s ~/repos/alignak-webui/alignak_webui/app.py ~/app/alignak-webui/app.py
+# TODO: to test again
+# cp ~/repos/alignak-webui/etc/settings.cfg settings.cfg
 ```
 
-You can set url and port of your backend in _settings.cfg_ like this:
-
-```conf
-alignak_backend = http://xxx.xxx.xxx.xxx:5000
-```
+You can set several configuration in _settings.cfg_.
 
 Now you can get some information about _app.py_. Just run `sudo python app.py -h` for more help. And now go to launch it:
 
@@ -224,4 +227,4 @@ Now your WebUI has started and you can reach : http://xxx.xxx.xxx.xxx on your br
 sudo tail -f ~/app/alignak-webui/alignak-webui.log
 ```
 
-
+# WIP
