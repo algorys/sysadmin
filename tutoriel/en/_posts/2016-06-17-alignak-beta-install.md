@@ -10,10 +10,10 @@ image:
   feature:
   credit:
   creditlink:
-author: ddurieux algorys
+author: algorys
 comments: true
 share:
-date: 2016-03-14T13:20:05+01:00
+date: 2016-06-17T13:20:05+01:00
 ---
 
 # Introduction
