@@ -62,13 +62,19 @@ Python 2.7.6
 
 **Tips:** You can upgrade `setuptools`, `pip` and `pbr` if you encounter problems with `pip install`.
 
-You have to create a user _alignak_ :
+You have to create a user _alignak_ and connect with:
 
-`sudo adduser alignak`
+```bash
+sudo adduser alignak
+# Here I give sudo right to alignak to facilitate installation.
+# You can switch with a sudo user instead.
+sudo adduser alignak sudo
+sudo su - alignak
+```
 
 # Alignak Daemons
 
-First we need to get sources of Alignak:
+First we need to get sources of Alignak. We try to keep it ordering, so let's create a folder call _repos_ before:
 
 ```bash
 cd ~; mkdir repos; cd repos
@@ -79,7 +85,8 @@ cd alignak
 Install dependencies with _pip_ and run _setup.py_:
 
 ```bash
-sudo pip install -r requirements.txt
+# No need of root for "pip"
+pip install -r requirements.txt
 sudo python setup.py install
 ```
 
@@ -112,10 +119,9 @@ sudo chown -R alignak:alignak /usr/local/var/run/alignak
 sudo chown -R alignak:alignak /usr/local/var/log/alignak
 ```
 
-Now connect with _alignak_ and run **alignak** daemons:
+Now ensure you're connect with _alignak_ and run **alignak** daemons:
 
 ```bash
-sudo su - alignak
 /usr/local/etc/init.d/alignak start
 ```
 
@@ -150,36 +156,37 @@ sudo apt-get install mongodb uwsgi uwsgi-plugin-python
 
 ## Get the sources
 
-Now you have alignak daemons running, you must get alignak backend running on your server. Go back to your user (`CTRL-D`) and clone again:
+Now you have alignak daemons running, you must get alignak backend running on your server. Keep user _alignak_ and type:
 
 ```bash
 cd ~/repos
-git clone https://github.com/Alignak-monitoring-contrib/alignak-backend.git
-cd alignak-backend
+# keep repos in backend
+git clone https://github.com/Alignak-monitoring-contrib/alignak-backend.git backend
+cd backend
 ```
 
 Then install requirements with _pip_ and launch _setup.py_
 
 ```bash
-sudo pip install -r requirements.txt
+pip install -r requirements.txt
 sudo python setup.py install
 ```
 
 ## Launching alignak-backend
 
-Now you have install alignak-backend, we must create a folder for starting our app:
+Now you have install alignak-backend, we must create a folder for starting our app. But not in foler _repos_ but in new one call **app**:
 
 ```bash
-cd ~; mkdir -p app/alignak-backend; cd app/alignak-backend
+cd ~; mkdir -p app/backend; cd app/backend
 # create symlink, like this update when updating repos
-ln -s ~/repos/alignak-backend/alignak_backend.py ~/app/alignak-backend/alignakbackend.py
+ln -s ~/repos/backend/alignak_backend.py ~/app/backend/alignakbackend.py
 ```
 
 Then launch app like this:
 
 ```bash
 # Replace xxx.xxx.xxx.xxx by IP of your server
-sudo uwsgi --wsgi-file alignakbackend.py --callable app --socket xxx.xxx.xxx.xxx:5000 --protocol=http --enable-threads
+uwsgi --plugin python --wsgi-file alignakbackend.py --callable app --socket xxx.xxx.xxx.xxx:5000 --protocol=http --enable-threads
 ```
 
 > **Fix and Tips:** If you encounter difficulties, please check you have _MongoDB_ and _uwsgi-plugin-python_ installed. Check error during process. Try to remove any _*.pyc_ in current folder. Try logout and login to see if that's not a problem of updating paths.
@@ -190,38 +197,60 @@ Now we have alignak daemons started by user alignak and alignak-backend starting
 
 ```bash
 cd ~/repos
-git clone https://github.com/Alignak-monitoring-contrib/alignak-webui.git
-cd alignak-webui
+git clone https://github.com/Alignak-monitoring-contrib/alignak-webui.git webui
+cd webui
 ```
 
 You an now proceed to install:
 
 ```bash
-sudo pip install -r requirements.txt
+pip install -r requirements.txt
 sudo python setup.py install
+# Make run.sh executable
+chmod +x run.sh
 ```
 
 Then go back to our folder for apps and create new symlink:
 
 ```bash
-cd ~/app; mkdir alignak-webui; cd alignak-webui
-ln -s ~/repos/alignak-webui/alignak_webui/app.py ~/app/alignak-webui/app.py
-# TODO: to test again
-# cp ~/repos/alignak-webui/etc/settings.cfg settings.cfg
+cd ~/app; mkdir webui; cd webui
+ln -s ~/repos/webui/run.sh ~/app/webui/run.sh
+cp ~/repos/webui/alignak_webui.py alignakwebui.py
+cp ~/repos/webui/etc/settings.cfg settings.cfg
 ```
 
-You can set several configuration in _settings.cfg_.
+You can set several configuration in _settings.cfg_ but especially your url backend here : 
 
-Now you can get some information about _app.py_. Just run `sudo python app.py -h` for more help. And now go to launch it:
+```conf
+# settings.cfg
+alignak_backend = http://xxx.xxx.xxx.xxx:5000
+```
+
+You have to give absolute path into **run.sh** ! Otherwise you can encouter this error:
 
 ```bash
-# Replace xxx.xxx.xxx.xxx by IP of your server or your FQDN.
-sudo python app.py -n xxx.xxx.xxx.xxx -p 80 &
-# In case of it doesn't take right backend but default
-sudo python app.py -b http://xxx.xxx.xxx.xxx:5000 -n xxx.xxx.xxx.xxx -p 80 &
+--- no python application found, check your startup logs for errors ---
 ```
 
-Now your WebUI has started and you can reach : http://xxx.xxx.xxx.xxx on your browser. You can have some logs in your current folder:
+Edit this file as follow:
+
+```conf
+uwsgi \
+--plugin python \
+--wsgi-file /home/alignak/app/webui/alignakwebui.py \
+--callable app \
+--socket xxx.xxx.xxx.xxx:8868 \
+--protocol=http \
+--enable-threads
+```
+
+And run it:
+
+```bash
+./run.sh
+```
+
+Now your WebUI has started and you can reach : http://xxx.xxx.xxx.xxx:8668/login on your browser. You can have some logs in your current folder:
 
 ```bash
 sudo tail -f ~/app/alignak-webui/alignak-webui.log
