@@ -13,6 +13,6 @@ Sysadmin.cool provides documentation and tutorials to establish an administratio
 
 The goal is also to bring a “synergy” in your park for all those applications communicate together and share their data.
 
-## Copntribute
+## Contribute
 
 If you want to contribute to this blog, please read [How to contribute](CONTRIBUTE.md).
