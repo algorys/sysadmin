@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Ouverture d'Admitoring
+title: Ouverture de Sysadmin.cool
 lang: fr
 ref: ouverture
 modified:
@@ -10,6 +10,7 @@ image:
   feature:
   credit:
   creditlink:
+author: algorys
 comments: true
 share:
 date: 2016-04-08T00:42:00+01:00

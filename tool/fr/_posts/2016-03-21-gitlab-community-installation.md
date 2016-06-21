@@ -10,6 +10,7 @@ image:
   feature:
   credit:
   creditlink:
+author: algorys
 comments: true
 share:
 date: 2016-03-21T14:50:07+01:00
@@ -616,7 +617,7 @@ Si toutes les données sont **vertes**, votre configuration est fonctionnelle !
 Vous devriez pouvoir ouvrir votre navigateur et pointer vers le FQDN correspondant (ici [http://glpi.local.fr](http://glpi.local.fr) ) et arriver devant la page suivante :
 
 <figure>
-    <img src="/images/gitlab/gitlab_accueil.png" alt="">
+    <img src="{{ site.url }}/images/gitlab/gitlab_accueil.png" alt="">
     <figcaption>Gitlab - Première visite</figcaption>
 </figure>
 

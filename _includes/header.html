@@ -1,7 +1,7 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
+  <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
   <title>{{ site.name }}</title>
   <meta name="theme-color" content="#222222" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,14 +13,15 @@
   <link href="{{site.baseurl | prepend:site.url}}/css/theme.css" rel="stylesheet">
   <link href="{{site.baseurl | prepend:site.url}}/css/syntax.css" rel="stylesheet">
   <link href="{{site.baseurl | prepend:site.url}}/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="icon" href="{{site.baseurl | prepend:site.url}}/favicon.ico" type="image/ico">
    {% if page.url == "/404.html" %}
      <meta http-equiv="refresh" content="5; url=/">
    {% endif %}
+  {% include google-analytics.html %}
 </head>
 
 <body>
 
-  {% include google-analytics.html %}
   {% include yandex-metrica.html %}
 
  <script type="text/javascript">
@@ -48,7 +49,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{{site.baseurl | prepend:site.url}}/">{{ site.name }}</a>
+	<a class="navbar-brand" href="{{site.baseurl | prepend:site.url}}/{{ site.index[page.lang] }}">{{ site.name }}</a>
         <span style="float: inherit;">
           <ul class="nav nav-tabs">
           {% assign posts=site.posts | where:"ref", page.ref | sort: 'lang' %}
@@ -59,11 +60,13 @@
           {% endfor %}
           
           {% assign pages=site.pages | where:"ref", page.ref | sort: 'lang' %}
+          {% if page.lang %}
           {% for page in pages %}
            <li>
                <a href="{{ site.baseurl | prepend:site.url}}{{ page.url }}" class="{{ page.lang }}">{{ page.lang }}</a>
            </li>
           {% endfor %}
+          {% endif %}
           </ul>
         </span>
       </div>

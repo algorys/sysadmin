@@ -65,7 +65,7 @@ h5 { font-size: .83em; }
 h6 { font-size: .75em; }
 
 .author {
-  color: #ee4444;
+  color: #48AAFF;
 }
 .author a {
   color: #ee4444;
@@ -96,6 +96,11 @@ blockquote {
   display: block;
 }
 
+.highlighter-rouge {
+  margin-left: 0.2em;
+  margin-right: 0.2em;
+}
+
 //********************************************************
 //                    Links
 //********************************************************
@@ -111,6 +116,10 @@ a:hover {
 //********************************************************
 //                    Social Links
 //********************************************************
+.share {
+    font-size: 1.5em;
+    text-align: center;
+}
 ul.social-media {
   text-align: center;
   padding: 0 0 10px 0;
@@ -166,6 +175,21 @@ div.post-meta {
 //    float: right;
   }
 }
+div.post-content { 
+    ul {
+    margin-bottom: 0.5em;
+    }
+}
+table {
+  margin-bottom: 6px;
+}
+td, th {
+    border: solid 1px black;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
 .post-footer {
 
   height: 40px;
@@ -176,6 +200,9 @@ div.post-meta {
   text-align: center;
 }
 
+pre {
+  border: none;
+}
 //    _  _     _
 //   | \| |___| |_ ___
 //   | .` / _ \  _/ -_)

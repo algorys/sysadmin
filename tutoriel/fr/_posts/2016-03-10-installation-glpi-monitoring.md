@@ -10,6 +10,7 @@ image:
   feature:
   credit:
   creditlink:
+author: algorys
 comments: true
 share:
 date: 2016-03-10T10:25:10+01:00
@@ -249,7 +250,7 @@ sudo service apache2 restart
 Et normalement vous devriez voir la fenêtre suivante si vous allez sur l'interface de GLPI :
 
 <figure>
-    <img src="/images/glpi/glpi_monitoring.png" alt="">
+    <img src="{{ site.url }}/images/glpi/glpi_monitoring.png" alt="">
     <figcaption>GLPI Monitoring</figcaption>
 </figure>
 
