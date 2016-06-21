@@ -10,6 +10,7 @@ image:
   feature:
   credit:
   creditlink:
+author: algorys
 comments: true
 share:
 date: 2016-03-08T10:00:05+01:00
@@ -190,7 +191,7 @@ Et initialisez la CLI de Shinken pour générer le fichier `.ini` contenant les 
 ```bash
 shinken --init
 ```
-> **Note :** toutes les commandes `shinken` doivent être lancées en tant qu'utilisateur `shinken` !
+> **Important :** toutes les commandes `shinken` doivent être lancées en tant qu'utilisateur `shinken` !
 
 Vous devriez avoir la sortie suivante :
 
@@ -242,7 +243,7 @@ sudo service shinken restart
 Félicitations ! Votre interface **Webui2** est configurée. Si vous vous rendez sur `http://ip_serveur:7767` avec votre navigateur, vous devriez voir la page suivante :
 
 <figure>
-    <img src="/images/shinken/shinken_webui2.png" alt="">
+    <img src="{{ site.url }}/images/shinken/shinken_webui2.png" alt="">
     <figcaption>Shinken - Écran de connexion Webui2</figcaption>
 </figure>
 
