@@ -18,19 +18,19 @@ date: 2016-05-18T19:08:05+01:00
 
 # Deploy with mirrors
 
-You can deploy with p2p, but if you can't / don't want use this on multi-sites, you can use mirrors.
+You can deploy with p2p, but if you can't / don't want to use this on multi-sites, you can use mirrors.
 
 ## What is mirrors?
 
-A mirror as a HTTP server where an agent try to get the file(s) required to deploy a software.
+A mirror is a HTTP server where an agent tries to get the file(s) required to deploy a software.
 
-## How it works ?
+## How does it work?
 
 ### In GLPI
 
 In GLPI, add a mirror in menu *Plugins* > *FusionInventory* > *Deploy* > *Mirror servers*
 
-Add in field *Mirror server address* the url of your HTTP server on the remote site (think to create the mirror server in the right entity).
+In the field *Mirror server address*, add the url of your HTTP server for the remote site (think to create the mirror server in the right entity).
 
 For example:
 
@@ -49,6 +49,4 @@ Copy / synchronize the folder (and sub-folders) *glpi/files/_plugins/fusioninven
 
 The agent will receive a list of mirror servers from GLPI.
 
-It will try it (them if defined many) with the file(s) required for deploy the software. If it not find it, at the end it get it from GLPI.
-
-
+It will try to use a (some if many servers are defined) mirror server to fetch the file(s) required to deploy the software. If it does not find the file on a mirror server, it gets it utlimately from GLPI.

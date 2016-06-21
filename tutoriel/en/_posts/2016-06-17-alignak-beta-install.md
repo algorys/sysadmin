@@ -20,17 +20,17 @@ date: 2016-06-17T13:20:05+01:00
 
 # Introduction
 
-Alignak is a monitoring solution. This solution is used to check your IT (or over) and to be informed about problems and performances degradation (mail, SMS, XMPP…). It can be used from small environments to very large (multi-datacenter, fail-over, load-balancing).
+Alignak is a monitoring framework. It is used to check your IT (or over) and to keep you informed about problems and performance degradation (mail, SMS, XMPP…). It can be used from small environments to very large (multi-datacenter, fail-over, load-balancing).
 
-**WARNING:** Alignak is still under development and may be unstable ! This tutorial is only for those who want to test this server.
+**WARNING:** Alignak is still under development and may be unstable ! This tutorial is only for the one who want to test this application.
 
-During this tutorial, we'll install the following servers:
+During this tutorial, we'll install the following applications:
 
 * Alignak: daemons of Alignak.
-* Alignak-Backend: backend of Alignak.
+* Alignak-Backend: backend (database) of Alignak.
 * Alignak-Webui: WebUI for Alignak Backend.
 
-These servers require a minimum knowledge in Linux and be resourceful. 
+Those applications require a minimum knowledge with Linux and to be resourceful.
 
 Following installations are made with **git** (to get the last fixed) but for each you can install with `pip` too ! Just make for each step instead of `git`:
 
@@ -42,11 +42,11 @@ In this case, steps of installations are not yet required (like `sudo python set
 
 **Be carefull, do not mix installations type !**
 
-Now that you warned, you can start to play ;) !
+Now that you aware, you can start to play ;) !
 
 # Prerequisites
 
-For all you need to install the following dependencies:
+For all the applications, you need to install the following dependencies:
 
 * Server up to date: `sudo apt-get update && sudo apt-get upgrade`
 * Python (**2.7** is recommended) and libs: `sudo apt-get install python2.7 python2.7-dev python-pip`
@@ -62,7 +62,7 @@ Python 2.7.6
 
 **Tips:** You can upgrade `setuptools`, `pip` and `pbr` if you encounter problems with `pip install`.
 
-You have to create a user _alignak_ and connect with:
+You have to create a user _alignak_ and connect as this user:
 
 ```bash
 sudo adduser alignak
@@ -74,7 +74,7 @@ sudo su - alignak
 
 # Alignak Daemons
 
-First we need to get sources of Alignak. We try to keep it ordering, so let's create a folder call _repos_ before:
+First we need to get sources of Alignak. We try to keep it ordered, so let's create a folder call _repos_ before:
 
 ```bash
 cd ~; mkdir repos; cd repos
@@ -112,33 +112,34 @@ Installing alignak-arbiter script to /usr/local/bin
 
 If you don't have create _alignak_ user, **do it now** !
 
-You must give rights to certain folders:
+You must give rights to certain folders (this because setup.py run as root):
 
 ```bash
 sudo chown -R alignak:alignak /usr/local/var/run/alignak
 sudo chown -R alignak:alignak /usr/local/var/log/alignak
+sudo chown -R alignak:alignak /usr/local/etc/alignak
 ```
 
-Now ensure you're connect with _alignak_ and run **alignak** daemons:
+Now ensure you're logged-in as _alignak_ and run **alignak** daemons:
 
 ```bash
 /usr/local/etc/init.d/alignak start
 ```
 
-Normally, the following should appears in your terminal:
+Normally, the following should appear in your terminal:
 
 ```bash
-Starting scheduler: 
+Starting scheduler:
    ...done.
-Starting poller: 
+Starting poller:
    ...done.
-Starting reactionner: 
+Starting reactionner:
    ...done.
-Starting broker: 
+Starting broker:
    ...done.
-Starting receiver: 
+Starting receiver:
    ...done.
-Starting arbiter: 
+Starting arbiter:
    ...done.
 ```
 
@@ -156,7 +157,7 @@ sudo apt-get install mongodb uwsgi uwsgi-plugin-python
 
 ## Get the sources
 
-Now you have alignak daemons running, you must get alignak backend running on your server. Keep user _alignak_ and type:
+Now you have alignak daemons running, you must get alignak backend running on your server. Stay logged-in as user _alignak_ and type:
 
 ```bash
 cd ~/repos
@@ -174,7 +175,7 @@ sudo python setup.py install
 
 ## Launching alignak-backend
 
-Now you have install alignak-backend, we must create a folder for starting our app. But not in foler _repos_ but in new one call **app**:
+Now you have installed alignak-backend, we must create a folder for starting our app. But not in the _repos_ folder but in a new one called **app**:
 
 ```bash
 cd ~; mkdir -p app/backend; cd app/backend
@@ -189,11 +190,11 @@ Then launch app like this:
 uwsgi --plugin python --wsgi-file alignakbackend.py --callable app --socket xxx.xxx.xxx.xxx:5000 --protocol=http --enable-threads
 ```
 
-> **Fix and Tips:** If you encounter difficulties, please check you have _MongoDB_ and _uwsgi-plugin-python_ installed. Check error during process. Try to remove any _*.pyc_ in current folder. Try logout and login to see if that's not a problem of updating paths.
+> **Fix and Tips:** If you encounter difficulties, please check you have _MongoDB_ and _uwsgi-plugin-python_ installed. Check error during process. Try to remove any _*.pyc_ in current folder. Try logout and login to see if that's not a problem of paths updating.
 
 # Alignak WebUI
 
-Now we have alignak daemons started by user alignak and alignak-backend starting by sudo and uwsgi. We can install alignak-webui ! Let's go:
+Now we have alignak daemons and alignak-backend started by the user _alignak_, We can install alignak-webui ! Let's go:
 
 ```bash
 cd ~/repos
@@ -210,7 +211,7 @@ sudo python setup.py install
 chmod +x run.sh
 ```
 
-Then go back to our folder for apps and create new symlink:
+Then go back to our folder for apps and create a new symlink:
 
 ```bash
 cd ~/app; mkdir webui; cd webui
@@ -219,7 +220,9 @@ cp ~/repos/webui/alignak_webui.py alignakwebui.py
 cp ~/repos/webui/etc/settings.cfg settings.cfg
 ```
 
-You can set several configuration in _settings.cfg_ but especially your url backend here : 
+The main _settings.cfg_ file is located in */usr/local/etc/alignak-webui*. The application will read this main file and overload its variables with the one found in the *./settings.cfg* and *./etc/settings.cfg* files if they exist.
+
+You can set several configuration in _settings.cfg_ but especially your url backend here :
 
 ```conf
 # settings.cfg
