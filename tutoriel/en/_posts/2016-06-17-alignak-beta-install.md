@@ -192,11 +192,81 @@ uwsgi --plugin python --wsgi-file alignakbackend.py --callable app --socket xxx.
 
 > **Fix and Tips:** If you encounter difficulties, please check you have _MongoDB_ and _uwsgi-plugin-python_ installed. Check error during process. Try to remove any _*.pyc_ in current folder. Try logout and login to see if that's not a problem of paths updating.
 
-# Alignak Backend import tool
+# Alignak Backend modules
+
+Now you have alignak daemons and backend running, but both do not yet communicate each other ... you need to install and configure some Alignak daemons modules.
 
 ## Get the sources
 
+Stay logged-in as user _alignak_ and type:
+
+```bash
+cd ~/repos
+# keep repos in backend
+git clone https://github.com/Alignak-monitoring-contrib/alignak-module-backend.git backend-modules
+cd backend-modules
+```
+
+Then install requirements with _pip_ and launch _setup.py_
+
+```bash
+pip install -r requirements.txt
+sudo python setup.py install
+```
+
+## Configuring Alignak modules
+
+The installation setup script created some configuration files in your */usr/local/etc/alignak/arbiter_cfg/modules* directory.
+
+You must configure the backend URL and login information in the three following files:
+
+```bash
+cd /usr/local/etc/alignak/arbiter_cfg
+sudo vi modules/mod-alignakbackendarbit.cfg
+sudo vi modules/mod-alignakbackendarbit.cfg
+sudo vi modules/mod-alignakbackendarbit.cfg
+```
+
+> **Hint:** Currently, you simply have to uncomment the `username` and `password` variables to allow connection to the backend.
+
+Then you need to configure Alignak daemons to inform about the existing modules:
+```bash
+cd /usr/local/etc/alignak/arbiter_cfg
+sudo vi daemons_cfg/arbiter-master.cfg
+
+    # Backend module
+    modules    	 alignakbackendarbit
+
+
+sudo vi daemons_cfg/broker-master.cfg
+
+    # Backend module
+    modules    	 alignakbackendbrok
+
+
+sudo vi daemons_cfg/scheduler-master.cfg
+
+    # Backend module
+    modules    	 alignakbackendsched
+
+```
+
+> **Note:** Currently, the scheduler backend module is broken and you should not configure it! Fixes is coming soon for the data retention...
+
+
+Once you configured Alignak daemons, restart Alignak and that's all:
+```bash
+/usr/local/etc/init.d/alignak restart
+```
+
+> **Tips:** If an error occured, you will have some information about it in the log files located in */usr/local/var/log/alignak*.
+
+
+# Alignak Backend import tool
+
 Now you have alignak daemons and backend running, you must fill the backend database with some data about the hosts and services you need to monitor. The Alignak backend provides a REST API that you can use with cUrl or any other tool like Postman, but what about importing your Nagios-like flat files configuration auto-magically ?
+
+## Get the sources
 
 Stay logged-in as user _alignak_ and type:
 
@@ -216,7 +286,7 @@ sudo python setup.py install
 
 ## Launching alignak-backend-import
 
-The alignak-backend-import setup script creates a script called `alignak_backend_import` in you */usr/local/bin* directory.
+The alignak-backend-import setup script creates a script called `alignak_backend_import` in your */usr/local/bin* directory.
 
 You can run the installed command line script with some options. Try this to get the available command line options:
 
@@ -238,6 +308,12 @@ Some explanations:
 
 
 > **Fix and Tips:** A detailed documentation is available here: http://alignak-backend-import.readthedocs.io/en/latest/index.html.
+
+
+Restart Alignak to make it aware of your new configuration:
+```bash
+/usr/local/etc/init.d/alignak restart
+```
 
 # Alignak WebUI
 
