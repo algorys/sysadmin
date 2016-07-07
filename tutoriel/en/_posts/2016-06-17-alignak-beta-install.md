@@ -192,9 +192,56 @@ uwsgi --plugin python --wsgi-file alignakbackend.py --callable app --socket xxx.
 
 > **Fix and Tips:** If you encounter difficulties, please check you have _MongoDB_ and _uwsgi-plugin-python_ installed. Check error during process. Try to remove any _*.pyc_ in current folder. Try logout and login to see if that's not a problem of paths updating.
 
+# Alignak Backend import tool
+
+## Get the sources
+
+Now you have alignak daemons and backend running, you must fill the backend database with some data about the hosts and services you need to monitor. The Alignak backend provides a REST API that you can use with cUrl or any other tool like Postman, but what about importing your Nagios-like flat files configuration auto-magically ?
+
+Stay logged-in as user _alignak_ and type:
+
+```bash
+cd ~/repos
+# keep repos in backend
+git clone https://github.com/Alignak-monitoring-contrib/alignak-backend-import.git backend-import
+cd backend-import
+```
+
+Then install requirements with _pip_ and launch _setup.py_
+
+```bash
+pip install -r requirements.txt
+sudo python setup.py install
+```
+
+## Launching alignak-backend-import
+
+The alignak-backend-import setup script creates a script called `alignak_backend_import` in you */usr/local/bin* directory.
+
+You can run the installed command line script with some options. Try this to get the available command line options:
+
+```bash
+alignak_backend_import -h
+```
+
+An exemple configuration is available in the project directory: *test/shinken_cfg_files/default*. You can import this configuration in your Alignak backend with this command:
+
+```bash
+alignak_backend_import -d -b http://127.0.0.1:5000 test/shinken_cfg_files/default/_main.cfg
+```
+
+Some explanations:
+
+- `-d` delete the former existing elements in the backend
+- `-b http://127.0.0.1:5000` specifies to use the local backend on port 5000
+- `test ... _main.cfg` is the flat files configuration entry point
+
+
+> **Fix and Tips:** A detailed documentation is available here: http://alignak-backend-import.readthedocs.io/en/latest/index.html.
+
 # Alignak WebUI
 
-Now we have alignak daemons and alignak-backend started by the user _alignak_, We can install alignak-webui ! Let's go:
+Now we have alignak daemons and alignak-backend started by the user _alignak_, we can install alignak-webui ! Let's go:
 
 ```bash
 cd ~/repos
@@ -220,16 +267,23 @@ cp ~/repos/webui/alignak_webui.py alignakwebui.py
 cp ~/repos/webui/etc/settings.cfg settings.cfg
 ```
 
-The main _settings.cfg_ file is located in */usr/local/etc/alignak-webui*. The application will read this main file and overload its variables with the one found in the *./settings.cfg* and *./etc/settings.cfg* files if they exist.
+The main _settings.cfg_ file is located in */etc/alignak_webui* (or */usr/local/etc/alignak-webui*). The application will read this main file and overload its variables with the one found in the *./settings.cfg* and *./etc/settings.cfg* files if they exist.
 
-You can set several configuration in _settings.cfg_ but especially your url backend here :
+You can set several configuration in _settings.cfg_ but you must set your backend URL:
 
 ```conf
 # settings.cfg
-alignak_backend = http://xxx.xxx.xxx.xxx:5000
+alignak_backend = http://127.0.01:5000
 ```
 
-You have to give absolute path into **run.sh** ! Otherwise you can encouter this error:
+Then launch app like this:
+
+```bash
+# Use 0.0.0.0 to listen on all interfaces of your server, else you can specify 127.0.0.1
+uwsgi --plugin python --wsgi-file alignakbackend.py --callable app --socket 0.0.0.0:8868 --protocol=http --enable-threads
+```
+
+It also exists a ``run.sh`` script that include this command line. If you do not start this script from the application directory, you must give absolute path for the *alignak_webui.py* file. Otherwise you can encouter this error:
 
 ```bash
 --- no python application found, check your startup logs for errors ---
@@ -253,15 +307,15 @@ And run it:
 ./run.sh
 ```
 
-Now your WebUI has started and you can reach : http://xxx.xxx.xxx.xxx:8668/login on your browser. You can log in with following credentials :
+Now your WebUI has started and you can reach : http://xxx.xxx.xxx.xxx:8668 on your browser. You can log in with the default following credentials:
 
 * username: admin
 * password: admin
 
-Logs can be tail in your current folder:
+The application builds a log file. The configuration for this log is defined in the _settings.cfg_ file, `logs` section. If the user rights permit, the log file is (as default) stored in the */var/log/alignak-webui* (or */usr/local/var/log/alignak-webui*) directory; else, the log can be tailed in the current folder:
 
 ```bash
-sudo tail -f ~/app/alignak-webui/alignak-webui.log
+tail -f ~/app/alignak-webui/alignak-webui.log
 ```
 
 # WIP
