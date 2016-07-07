@@ -221,7 +221,12 @@ sudo python app.py -n xxx.xxx.xxx.xxx -p 80 &
 sudo python app.py -b http://xxx.xxx.xxx.xxx:5000 -n xxx.xxx.xxx.xxx -p 80 &
 ```
 
-Maintenant votre webui est démarrée et vous pouvez allez sur : http://xxx.xxx.xxx.xxx dans votre navigateur. Vous pouvez également regarder les logs de celle-ci :
+Maintenant votre webui est démarrée et vous pouvez allez sur : http://xxx.xxx.xxx.xxx/login dans votre navigateur. Les identifiants par défaut sont :
+
+* username : admin
+* password : admin
+
+Vous pouvez également regarder les logs de celle-ci :
 
 ```bash
 sudo tail -f ~/app/alignak-webui/alignak-webui.log

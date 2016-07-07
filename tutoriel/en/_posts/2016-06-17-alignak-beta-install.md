@@ -253,7 +253,12 @@ And run it:
 ./run.sh
 ```
 
-Now your WebUI has started and you can reach : http://xxx.xxx.xxx.xxx:8668/login on your browser. You can have some logs in your current folder:
+Now your WebUI has started and you can reach : http://xxx.xxx.xxx.xxx:8668/login on your browser. You can log in with following credentials :
+
+* username: admin
+* password: admin
+
+Logs can be tail in your current folder:
 
 ```bash
 sudo tail -f ~/app/alignak-webui/alignak-webui.log
