@@ -10,7 +10,7 @@ image:
   feature:
   credit:
   creditlink:
-author: algorys
+author: algorys mohierf
 comments: true
 share:
 date: 2016-06-17T13:20:05+01:00
@@ -44,7 +44,7 @@ In this case, steps of installations are not yet required (like `sudo python set
 
 Now that you aware, you can start to play ;) !
 
-# Prerequisites
+# Prerequisites
 
 For all the applications, you need to install the following dependencies:
 
@@ -112,7 +112,7 @@ Installing alignak-reactionner script to /usr/local/bin
 Installing alignak-arbiter script to /usr/local/bin
 ```
 
-If you habe not yet created _alignak_ user, **do it now** !
+If you had not yet created _alignak_ user, **do it now** !
 
 You must give rights to certain folders (this because setup.py runs as root):
 
@@ -149,7 +149,7 @@ That's done, alignak daemons are started !
 
 ## Alignak configuration
 
-Alignak configuration files are located in the */usr/local/etc/alignak* directory. Main diretories:
+Alignak configuration files are located in the */usr/local/etc/alignak* directory. Main directories:
 
     - certs
     - daemons: daemons base configuration (communication, directories, ...)
@@ -183,6 +183,7 @@ vi /usr/local/etc/alignak/resource.d/paths.cfg
 ```
 
 Once installation finished, restart Alignak to make it know the new parameters:
+
 ```bash
 /usr/local/etc/init.d/alignak restart
 ```
@@ -217,6 +218,7 @@ sudo python setup.py install
 ```
 
 ## Launching alignak-backend
+
 Now that you have installed alignak-backend, you must start the backend.
 
 The Alignak backend is a Python WSGI compliant application. As of it, it is very efficient to use uWSGI as a launcher to allow concurrency, monitoring, ...
@@ -224,6 +226,7 @@ The Alignak backend is a Python WSGI compliant application. As of it, it is very
 It exists several solutions:
 
 ### Create your own application starter
+
 Now that you have installed alignak-backend, you must create a folder for starting our app. But not in the _repos_ folder but in a new one called **app**:
 
 ```bash
@@ -242,18 +245,18 @@ uwsgi --plugin python --wsgi-file alignakbackend.py --callable app --socket xxx.
 > **Fix and Tips:** If you meet some problems, please check you installed _MongoDB_ and _uwsgi-plugin-python_. Check errors during the installation process. Try to remove any _*.pyc_ in the current folder. Try to logout and login to see if that's not a problem of paths updating.
 
 
-> **Note:** It exists many parameters to configure and optimize uWSGI; please see: `uWSGI project <http://uwsgi-docs.readthedocs.io/en/latest/WSGIquickstart.html`_
+> **Note:** It exists many parameters to configure and optimize uWSGI; please see: [uWSGI project](http://uwsgi-docs.readthedocs.io/en/latest/WSGIquickstart.html).
 
 
 ### Use pre built scripts
 
-The project repository includes a sample / default application start script: ``bin/run.sh``. This script includes an uWSGI default command line that starts the backend and make it listen on all interfaces, port 5000.
+The project repository includes a sample / default application start script: `bin/run.sh`. This script includes an uWSGI default command line that starts the backend and make it listen on all interfaces, port 5000.
 
 From the project home directory:
+
 ```bash
 ./bin/run.sh
 ```
-
 
 # Alignak Backend modules
 
@@ -293,6 +296,7 @@ sudo vi modules/mod-alignakbackendarbit.cfg
 > **Hint:** Currently, you simply have to uncomment the `username` and `password` variables to allow connection to the backend.
 
 Then you need to configure Alignak daemons to inform about the existing modules:
+
 ```bash
 cd /usr/local/etc/alignak/arbiter_cfg
 sudo vi daemons_cfg/arbiter-master.cfg
@@ -311,19 +315,18 @@ sudo vi daemons_cfg/scheduler-master.cfg
 
     # Backend module
     modules    	 alignakbackendsched
-
 ```
 
 > **Note:** Currently, the scheduler backend module is broken and you should not configure it! Fixes is coming soon for the data retention...
 
 
 Once you configured Alignak daemons, restart Alignak and that's all:
+
 ```bash
 /usr/local/etc/init.d/alignak restart
 ```
 
 > **Tips:** If an error occured, you will have some information about it in the log files located in */usr/local/var/log/alignak*.
-
 
 # Alignak Backend import tool
 
@@ -372,8 +375,8 @@ Some explanations:
 
 > **Fix and Tips:** A detailed documentation is available here: http://alignak-backend-import.readthedocs.io/en/latest/index.html.
 
-
 Restart Alignak to make it aware of your new configuration:
+
 ```bash
 /usr/local/etc/init.d/alignak restart
 ```
@@ -439,7 +442,7 @@ uwsgi --plugin python --wsgi-file alignakwebui.py --callable app --socket xxx.xx
 > **Fix and Tips:** If you meet some problems, please check you installed _MongoDB_ and _uwsgi-plugin-python_. Check errors during the installation process. Try to remove any _*.pyc_ in the current folder. Try to logout and login to see if that's not a problem of paths updating.
 
 
-> **Note:** It exists many parameters to configure and optimize uWSGI; please see: `uWSGI project <http://uwsgi-docs.readthedocs.io/en/latest/WSGIquickstart.html`_
+> **Note:** It exists many parameters to configure and optimize uWSGI; please see: [uWSGI project](http://uwsgi-docs.readthedocs.io/en/latest/WSGIquickstart.html).
 
 
 ### Use pre built scripts
@@ -447,10 +450,10 @@ uwsgi --plugin python --wsgi-file alignakwebui.py --callable app --socket xxx.xx
 The project repository includes a sample / default application start script: ``bin/run.sh``. This script includes an uWSGI default command line that starts the WebUI and make it listen on all interfaces, port 5001.
 
 From the project home directory:
+
 ```bash
 ./bin/run.sh
 ```
-
 
 ## Use Alignak WebUI
 
