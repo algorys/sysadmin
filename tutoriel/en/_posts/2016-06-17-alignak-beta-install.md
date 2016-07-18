@@ -87,7 +87,7 @@ cd alignak
 Install dependencies with _pip_ and run _setup.py_:
 
 ```bash
-# No need of root for "pip"
+# No need of root for "pip". If you encounter problems with install, please retry with '--user' flag.
 pip install -r requirements.txt
 sudo python setup.py install
 ```
@@ -164,7 +164,7 @@ Alignak configuration files are located in the */usr/local/etc/alignak* director
 To launch checks on host/services, Alignak need to have some installed plugins. Most often used plugins are the Nagios one. To install Nagios plugins, it's simple, you've just to download it on official website : [Nagios-plugins](https://nagios-plugins.org/).
 
 ```bash
-cd ~
+cd ~; mkdir tools; cd tools
 wget http://www.nagios-plugins.org/download/nagios-plugins-2.1.1.tar.gz
 tar -xzvf nagios-plugins-2.1.1.tar.gz
 # Now install it
@@ -174,10 +174,10 @@ make
 sudo make install
 ```
 
-Your plugins are installed. They may not be installed in the directory `/usr/lib/nagios/plugins`. In this case , search for where they are (`whereis nagios` for example) and edit the file `/usr/local/etc/alignak/resource.d/paths.cfg` accordingly.
+Your plugins are installed. They may not be installed in the directory `/usr/lib/nagios/plugins`. In this case , search for where they are (`whereis nagios` for example) and edit the file `/usr/local/etc/alignak/arbiter_cfg/resource.d/paths.cfg` accordingly.
 
 ```bash
-vi /usr/local/etc/alignak/resource.d/paths.cfg
+vi /usr/local/etc/alignak/arbiter_cfg/resource.d/paths.cfg
 
     $NAGIOSPLUGINSDIR$=/usr/local/nagios/libexec
 ```
@@ -187,7 +187,6 @@ Once installation finished, restart Alignak to make it know the new parameters:
 ```bash
 /usr/local/etc/init.d/alignak restart
 ```
-
 
 # Alignak Backend
 
@@ -213,6 +212,7 @@ cd backend
 Then install requirements with _pip_ and launch _setup.py_
 
 ```bash
+# If you encounter problems with pip install, please retry with '--user' flag.
 pip install -r requirements.txt
 sudo python setup.py install
 ```
@@ -276,6 +276,7 @@ cd backend-modules
 Then install requirements with _pip_ and launch _setup.py_
 
 ```bash
+# If you encounter problems with pip install, please retry with '--user' flag.
 pip install -r requirements.txt
 sudo python setup.py install
 ```
@@ -289,13 +290,15 @@ You must configure the backend URL and login information in the three following 
 ```bash
 cd /usr/local/etc/alignak/arbiter_cfg
 sudo vi modules/mod-alignakbackendarbit.cfg
-sudo vi modules/mod-alignakbackendarbit.cfg
-sudo vi modules/mod-alignakbackendarbit.cfg
+sudo vi modules/mod-alignakbackendbrok.cfg
+sudo vi modules/mod-alignakbackendsched.cfg
 ```
 
-> **Hint:** Currently, you simply have to uncomment the `username` and `password` variables to allow connection to the backend.
+> **Hint:** Currently, you simply have to uncomment the `username` and `password` variables to allow connection to the backend. Check **api_url** in this files too !
 
 Then you need to configure Alignak daemons to inform about the existing modules:
+
+> **Note:** Currently, the scheduler backend module is broken and you should not configure it! Fixes is coming soon for the data retention...
 
 ```bash
 cd /usr/local/etc/alignak/arbiter_cfg
@@ -316,9 +319,6 @@ sudo vi daemons_cfg/scheduler-master.cfg
     # Backend module
     modules    	 alignakbackendsched
 ```
-
-> **Note:** Currently, the scheduler backend module is broken and you should not configure it! Fixes is coming soon for the data retention...
-
 
 Once you configured Alignak daemons, restart Alignak and that's all:
 
@@ -373,7 +373,7 @@ Some explanations:
 - `test ... _main.cfg` is the flat files configuration entry point
 
 
-> **Fix and Tips:** A detailed documentation is available here: http://alignak-backend-import.readthedocs.io/en/latest/index.html.
+> **Fix and Tips:** A detailed documentation is available here: [Doc alignak-backend-import](http://alignak-backend-import.readthedocs.io/en/latest/index.html).
 
 Restart Alignak to make it aware of your new configuration:
 
@@ -391,7 +391,7 @@ git clone https://github.com/Alignak-monitoring-contrib/alignak-webui.git webui
 cd webui
 ```
 
-You an now proceed to install:
+You can now proceed to install:
 
 ```bash
 pip install -r requirements.txt
@@ -426,7 +426,6 @@ Like the Alignak backend, the WebUI is a Python WSGI compliant application and i
 Once that you have installed alignak-webui, you must create a folder for starting our app. But not in the _repos_ folder but in a new one called **app**:
 
 ```bash
-cd ~; mkdir -p app/backend; cd app/backend
 # create symlink, like this update when updating repos
 ln -s ~/repos/webui/bin/run.sh ~/app/webui/run.sh
 cp ~/repos/webui/bin/alignak_webui.py alignakwebui.py
@@ -469,5 +468,17 @@ The application builds a log file. The configuration for this log is defined in 
 ```bash
 tail -f ~/app/alignak-webui/alignak-webui.log
 ```
+
+## VM-Test:
+
+If you make install on a Virtual-Machine (with VMWare as example) and you keep localhost (`127.0.0.1:5001`) as default adress, your webui can't be reach at http://127.0.0.1:5001. Cause this is your local loop.
+
+But you can bypass that with **bind_adress**. Open a new terminal and type following command:
+
+```bash
+ssh -L 5001:127.0.0.1:5001 login@ip_vm_test
+```
+
+Where *ip_vm_test* is your IP server (not local loop !). Then simply open [http://127.0.0.1:5001](http://127.0.0.1:5001) in your favorite browser.
 
 # WIP
