@@ -66,7 +66,7 @@ You have to create a user _alignak_ and connect as this user:
 
 ```bash
 sudo adduser alignak
-# Here I give sudo right to alignak to facilitate installation.
+# Here you give sudo right to alignak to facilitate installation.
 # You can switch with a sudo user instead.
 sudo adduser alignak sudo
 sudo su - alignak
@@ -174,7 +174,7 @@ make
 sudo make install
 ```
 
-Your plugins are installed. They may not be installed in the directory `/usr/lib/nagios/plugins`. In this case , search for where they are (`whereis nagios` for example) and edit the file `/usr/local/etc/alignak/arbiter_cfg/resource.d/paths.cfg` accordingly.
+Your plugins are installed. They may not be installed in the directory `/usr/lib/nagios/plugins`. In this case , search for where they are (`whereis nagios` for example) and edit the file `/usr/local/etc/alignak/arbiter_cfg/resource.d/paths.cfg` accordingly:
 
 ```bash
 vi /usr/local/etc/alignak/arbiter_cfg/resource.d/paths.cfg
@@ -273,7 +273,7 @@ git clone https://github.com/Alignak-monitoring-contrib/alignak-module-backend.g
 cd backend-modules
 ```
 
-Then install requirements with _pip_ and launch _setup.py_
+Then install requirements with _pip_ and launch _setup.py_:
 
 ```bash
 # If you encounter problems with pip install, please retry with '--user' flag.
@@ -338,7 +338,7 @@ Stay logged-in as user _alignak_ and type:
 
 ```bash
 cd ~/repos
-# keep repos in backend
+# keep repos in backend-import
 git clone https://github.com/Alignak-monitoring-contrib/alignak-backend-import.git backend-import
 cd backend-import
 ```
@@ -400,7 +400,7 @@ sudo python setup.py install
 chmod +x run.sh
 ```
 
-Then go back to our folder for apps and create a new symlink:
+Then go back to our folder for apps and copy settings file:
 
 ```bash
 cd ~/app; mkdir webui; cd webui
@@ -417,13 +417,14 @@ alignak_backend = http://127.0.01:5000
 ```
 
 ## Launching alignak-webui
+
 Now that you have installed alignak-webui, you must start the Web application.
 
 Like the Alignak backend, the WebUI is a Python WSGI compliant application and it exists several solutions to make it run...
 
 ### Create your own application starter
 
-Once that you have installed alignak-webui, you must create a folder for starting our app. But not in the _repos_ folder but in a new one called **app**:
+Be back to _~/app/webui_ folder and type:
 
 ```bash
 # create symlink, like this update when updating repos
@@ -469,7 +470,7 @@ The application builds a log file. The configuration for this log is defined in 
 tail -f ~/app/alignak-webui/alignak-webui.log
 ```
 
-## VM-Test:
+## VM-Test
 
 If you make install on a Virtual-Machine (with VMWare as example) and you keep localhost (`127.0.0.1:5001`) as default adress, your webui can't be reach at http://127.0.0.1:5001. Cause this is your local loop.
 
@@ -479,6 +480,12 @@ But you can bypass that with **bind_adress**. Open a new terminal and type follo
 ssh -L 5001:127.0.0.1:5001 login@ip_vm_test
 ```
 
-Where *ip_vm_test* is your IP server (not local loop !). Then simply open [http://127.0.0.1:5001](http://127.0.0.1:5001) in your favorite browser.
+Where *ip_vm_test* is your IP test server (and not his local loop !). Then simply open [http://127.0.0.1:5001](http://127.0.0.1:5001) in your favorite browser.
+
+# Additional tools
+
+There is other tools to complete Alignak Suite. Here is the list :
+
+* [Alignak-App](http://alignak-app.readthedocs.io/en/develop/index.html): App Indicator for Alignak who display notifications when something's wrong.
 
 # WIP
