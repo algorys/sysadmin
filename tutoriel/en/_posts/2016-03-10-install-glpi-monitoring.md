@@ -27,6 +27,8 @@ To have already data in GLPI, you can do it by hand or use an automate tool, lik
 
 All below configurations had be done on Shinken 2.4.2 and GLPI 0.90.1 servers. It is therefore advisable to have similar servers. However, most configurations are expected to be virtually identical, except for versions of the plugins used.
 
+> **Note:** You can not import hosts already created in Shinken files to GLPI!
+
 # Prerequisites
 
 To follow this tutorial, you must have:

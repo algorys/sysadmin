@@ -27,6 +27,8 @@ Pour déjà avoir des données dans GLPI, vous devrez les remplir à la main ou 
 
 Les configurations qui vont suivre ont été faites sur un serveur Shinken 2.4.2 et un serveur GLPI 0.90.1. Il est donc conseillé d'avoir des serveurs quasiment semblables. Toutefois, la plupart des configurations sont censées être quasiment identiques, hormis les versions des plugins utilisés.
 
+> **Note :** Vous ne pourrez pas remonter des hôtes déjà créés dans les fichiers de Shinken vers GLPI !
+
 # Prérequis
 
 Pour suivre ce tutoriel, vous devrez avoir les prérequis suivants :
