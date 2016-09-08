@@ -18,10 +18,12 @@ date: 2016-03-10T10:25:10+01:00
 
 # Introduction
 
-Ce tutoriel est destiné aux personnes qui possèdent un serveur [GLPI](http://glpi-project.org/) et un serveur [Shinken](http://www.shinken-monitoring.org/) ; et qui veulent monitorer leurs serveurs et afficher directement les données de Shinken dans GLPI. Si vous n'avez pas ces serveurs ou que vous n'en avez qu'un sur deux, je vous conseille de suivre les tutoriels suivants :
+Ce tutoriel est destiné aux personnes qui possèdent un serveur [GLPI](http://glpi-project.org/) et un serveur [Shinken](http://www.shinken-monitoring.org/) ; et qui veulent monitorer leurs serveurs et afficher directement les données de Shinken dans GLPI. Vous devez avoir déjà des serveurs/ ordinateurs dans GLPI. Si vous n'avez pas ces serveurs, je vous conseille de suivre les tutoriels suivants :
 
-* [Installer Shinken](/tuto/shinken-installation/)
-* [Installer GLPI](/tuto/glpi-installation/)
+* [Installer Shinken](/2016/03/shinken-installation)
+* [Installer GLPI](/2016/03/glpi-installation)
+
+Pour déjà avoir des données dans GLPI, vous devrez les remplir à la main ou bien utiliser un outils automatisé tel que [FusionInventory](/2016/03/fusion-inventory). Il vous permettra d'avoir des hôtes à monitorer.
 
 Les configurations qui vont suivre ont été faites sur un serveur Shinken 2.4.2 et un serveur GLPI 0.90.1. Il est donc conseillé d'avoir des serveurs quasiment semblables. Toutefois, la plupart des configurations sont censées être quasiment identiques, hormis les versions des plugins utilisés.
 
@@ -29,11 +31,11 @@ Les configurations qui vont suivre ont été faites sur un serveur Shinken 2.4.2
 
 Pour suivre ce tutoriel, vous devrez avoir les prérequis suivants :
 
-* Un serveur GLPI avec un accès `root` et un compte administrateur (du moins qui vous laisse installer des plugins et les configurer) !
+* Un serveur GLPI avec un accès `root` ou un compte qui possède les droits suffisants sur l'installation GLPI.
 * Un serveur Shinken avec un accès `root` !
 * Des enregistrements DNS qui permettent aux 2 serveurs cités ci-dessus de communiquer.
 
-Le mieux est d'aussi avoir un minimum d'hôtes sur votre serveur Shinken pour que cela soit intéressant.
+Le mieux est d'aussi avoir un minimum d'hôtes/serveurs dans GLPI pour que cela soit intéressant à monitorer.
 
 # Plugins GLPI
 
@@ -42,7 +44,7 @@ Pour le moment nous allons déjà installer les plugins requis par GLPI pour pou
 * [glpi_Monitoring](https://github.com/ddurieux/glpi_monitoring) : ce plugin servira à afficher les différents serveurs que vous monitorer dans Shinken.
 * [web_services](https://forge.glpi-project.org/projects/webservices) : ce plugin permettra aux deux serveurs de pouvoir communiquer.
 
-Pour que cela soit pratique, je vous conseille de faire un dossier `plugin-glpi` dans votre `HOME` pour pouvoir y revenir plus tard lors de futurs mises à jour. Je vous conseille aussi d'utiliser [Git](https://git-scm.com/) pour récupérer vos plugins si possible.
+Pour que cela soit pratique, je vous conseille de faire un dossier `plugin-glpi` dans votre `HOME` pour pouvoir y revenir plus tard lors de futurs mises à jour. Je vous conseille aussi d'utiliser [Git](https://git-scm.com/) pour récupérer vos plugins plus facilement.
 
 ## Téléchargement de glpi_monitoring
 
@@ -124,7 +126,7 @@ GRANT insert ON glpi_plugin_monitoring_serviceevents TO shinkenbroker;
 GRANT select,update ON glpi_plugin_monitoring_servicescatalogs TO shinkenbroker;
 ```
 
-> **Atention :** si votre serveur Shinken et votre serveur GLPI ne sont pas sur le même serveur, il faudra définir l'utilisateur avec son nom de machine : `'shinkenbroker'@'ip_serveur_shinken'` !
+> **Attention :** si votre serveur Shinken et votre serveur GLPI ne sont pas sur le même serveur, il faudra définir l'utilisateur avec son nom de machine : `'shinkenbroker'@'ip_serveur_shinken'` !
 
 Tapez `CTRL-D` ou `exit` pour sortir de MySQL.
 
@@ -149,7 +151,7 @@ Enfin cliquez sur le bouton **Ajouter** pour valider votre configuration. Rien d
 
 # Modules Shinken
 
-Passons maintenant à la configuration des modules de Shinken. Vous allez devoir paramétrer les démons **Arbiter** et **Broker** pour qu'ils puissent se conecter à GLPI et sa Base de Données, et installer les modules requis en conséquence.
+Passons maintenant à la configuration des modules de Shinken. Vous allez devoir paramétrer les démons **Arbiter** et **Broker** pour qu'ils puissent se connecter à GLPI et sa Base de Données, et installer les modules requis en conséquence.
 
 En tant qu'utilisateur `shinken` sur le serveur Shinken :
 
@@ -286,7 +288,9 @@ Si tout fonctionne, il ne vous restera plus qu'à configurer vos commandes, vos 
 
 ## Commandes
 
-Les commandes définies dans **glpi-monitoring** ne sont pas forcément configurées pour votre installation. Vous pouvez ne pas avoir les plugins prédéfinis et votre variable `$NAGIOSPLUGINSDIR$` doit être mis à jour en fonction de votre configuration.
+**Note :** les plugins nagios (et donc vos commndes) ont été normalement installés, précédemment, dans le tutoriel de [Shinken](/2016/03/shinken-installation). 
+
+Les commandes définies dans **glpi-monitoring** ne sont pas forcément configurées pour votre installation. Vous pouvez ne pas avoir les plugins définis dans le bon dossier et votre variable `$NAGIOSPLUGINSDIR$` doit être mis à jour en fonction de votre configuration.
 
 Pour rappel vous pouvez configurer vos `$PATH` dans : `SHINKEN_DIR/resource.d/paths.cfg` (sur votre serveur Shinken).
 
@@ -322,3 +326,11 @@ Il ne vous reste plus qu'à définir un catalogue de composant pour tout ça. Le
 * Rajoutez un contact : vous pouvez aussi rajouter un contact qui sera prévenu si l'_état_ de vos composants change (UP, DOWN, WARNING, etc...).
 
 Une fois votre catalogue défini, Shinken devrait normalement redémarrer automatiquement lorsque vous cliquerez sur **Ajouter** et donc rajouter le catalogue créé.
+
+# Conclusion
+
+Glpi-Monitoring n'est pas forcément simple à configurer et installer ; notamment l'installation complète de tous ces serveurs.
+
+Prenez le temps de bien vérifier vos configurations et vos logs afin de vous assurez qu'il n'ya pas des erreurs qui trainent. N'hésitez pas non plus à contacter les équipes de développement sur les forums ou les canaux IRC.
+
+Gardez aussi en tête que nous sommes pour la plupart bénévoles pour tous ces software et que nous ne pouvons pas toujours répondre rapidement.
