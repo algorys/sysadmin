@@ -40,7 +40,7 @@ Following installations are made with **git** (to get the last fixed) but for ea
 
 In this case, steps of installations are not yet required (like `sudo python setup.py install`).
 
-**Be carefull, do not mix installations type !**
+**WARNING:** currently, pip packages are not up to date. So it is strongly advised to install **from git !** And be carefull, do not **mix** installations type !
 
 Now that you aware, you can start to play ;) !
 
@@ -76,7 +76,15 @@ sudo su - alignak
 
 ## Alignak installation and start
 
-First we need to get sources of Alignak. We try to keep it ordered, so let's create a folder call _repos_ before:
+Before, we need some dependencies (for _cryptography_ module):
+
+```bash
+sudo apt-get install libssl-dev
+```
+
+### Installation with sources
+
+For installation from sources, we need to get sources of Alignak. We try to keep it ordered, so let's create a folder call _repos_ before. We keep all alignak repository inside to facilitate updates later. Type:
 
 ```bash
 cd ~; mkdir repos; cd repos
@@ -95,28 +103,62 @@ sudo python setup.py install
 Normally you'll have something ending like:
 
 ```bash
-=======================================================================================================
-==                                                                                                   ==
-==  Don't forget to create user and group 'alignak' or change daemons configuration                  ==
-==                                                                                                   ==
-=======================================================================================================
-
-running install_egg_info
-Copying alignak.egg-info to /usr/local/lib/python2.7/dist-packages/alignak-0.2.egg-info
-running install_scripts
-Installing alignak-broker script to /usr/local/bin
-Installing alignak-scheduler script to /usr/local/bin
-Installing alignak-receiver script to /usr/local/bin
-Installing alignak-poller script to /usr/local/bin
-Installing alignak-reactionner script to /usr/local/bin
-Installing alignak-arbiter script to /usr/local/bin
+================================================================================
+==                                                                            ==
+==  The installation succeded.                                                ==
+==                                                                            ==
+== -------------------------------------------------------------------------- ==
+==                                                                            ==
+== You can run Alignak with:                                                  ==
+==   /usr/local/etc/init.d/alignak start
+==                                                                            ==
+== The default installed configuration is located here:                       ==
+==   /usr/local/etc/alignak
+==                                                                            ==
+== You will find more information about Alignak configuration here:           ==
+==   http://alignak-doc.readthedocs.io/en/latest/04_configuration/index.html  ==
+==                                                                            ==
+== -------------------------------------------------------------------------- ==
+==                                                                            ==
+== You should grant the write permissions on the configuration directory to   ==
+== the user alignak:                                                          ==
+==   find /usr/local/etc/alignak -type f -exec chmod 664 {} +
+==   find /usr/local/etc/alignak -type d -exec chmod 775 {} +
+== -------------------------------------------------------------------------- ==
+==                                                                            ==
+== You should also grant ownership on those directories to the user alignak:  ==
+==   chown -R alignak:alignak /usr/local/var/run/alignak                      ==
+==   chown -R alignak:alignak /usr/local/var/log/alignak                      ==
+==   chown -R alignak:alignak /usr/local/var/libexec/alignak                  ==
+==                                                                            ==
+== -------------------------------------------------------------------------- ==
+==                                                                            ==
+== Please note that installing Alignak with the setup.py script is not the    ==
+== recommended way. You'd rather use the packaging built for your OS          ==
+== distribution that you can find here:                                       ==
+==   http://alignak-monitoring.github.io/download/                            ==
+==                                                                            ==
+================================================================================
 ```
 
-If you had not yet created _alignak_ user, **do it now** !
+### Installation with pip
 
-You must give rights to certain folders (this because setup.py runs as root):
+Just run following command:
 
 ```bash
+sudo pip install alignak
+```
+
+### Rights and launch
+
+**Important:** If you had not yet created _alignak_ user, **do it now** !
+
+As previously said, you must give rights to certain folders (this because setup.py runs as root):
+
+```bash
+sudo find /usr/local/etc/alignak -type f -exec chmod 664 {} +
+sudo find /usr/local/etc/alignak -type d -exec chmod 775 {} +
+# And owner of directory
 sudo chown -R alignak:alignak /usr/local/var/run/alignak
 sudo chown -R alignak:alignak /usr/local/var/log/alignak
 sudo chown -R alignak:alignak /usr/local/etc/alignak
@@ -161,7 +203,7 @@ Alignak configuration files are located in the */usr/local/etc/alignak* director
 
 ## Nagios Plugins
 
-To launch checks on host/services, Alignak need to have some installed plugins. Most often used plugins are the Nagios one. To install Nagios plugins, it's simple, you've just to download it on official website : [Nagios-plugins](https://nagios-plugins.org/).
+To launch checks on host/services, Alignak need to have some installed plugins. Most often used plugins are the Nagios one. To install Nagios plugins, it's simple, you've just to download it on official website : [Nagios-plugins](https://nagios-plugins.org/). You can install it by pip or package but with sources, you make sure that plugins are up to date.
 
 ```bash
 cd ~; mkdir tools; cd tools
@@ -198,7 +240,9 @@ You have to install `MongoDB` and `uwsgi` to run _alignak-backend_, so here we g
 sudo apt-get install mongodb uwsgi uwsgi-plugin-python
 ```
 
-## Get the sources
+## Backend Installation
+
+### Installation with sources
 
 Now you have alignak daemons running, you must get alignak backend running on your server. Stay logged-in as user _alignak_ and type:
 
@@ -217,6 +261,14 @@ pip install -r requirements.txt
 sudo python setup.py install
 ```
 
+### Installation with pip
+
+Just run following command:
+
+```bash
+pip install alignak-backend
+```
+
 ## Launching alignak-backend
 
 Now that you have installed alignak-backend, you must start the backend.
@@ -225,7 +277,7 @@ The Alignak backend is a Python WSGI compliant application. As of it, it is very
 
 It exists several solutions:
 
-### Create your own application starter
+### Create your own application starter (Sources)
 
 Now that you have installed alignak-backend, you must create a folder for starting our app. But not in the _repos_ folder but in a new one called **app**:
 
@@ -248,7 +300,7 @@ uwsgi --plugin python --wsgi-file alignakbackend.py --callable app --socket xxx.
 > **Note:** It exists many parameters to configure and optimize uWSGI; please see: [uWSGI project](http://uwsgi-docs.readthedocs.io/en/latest/WSGIquickstart.html).
 
 
-### Use pre built scripts
+### Use pre built scripts (Sources)
 
 The project repository includes a sample / default application start script: `bin/run.sh`. This script includes an uWSGI default command line that starts the backend and make it listen on all interfaces, port 5000.
 
@@ -258,17 +310,43 @@ From the project home directory:
 ./bin/run.sh
 ```
 
+### Create your file (for install from pip)
+
+Go to alignak HOME and create a file:
+
+```bash
+cd ~; mkdir -p app/backend; cd app/backend
+vi alignakbackend.py
+```
+
+**WARNING:** be sure to not name your file *alignak_backend*, otherwise you will have conflicts with the library of backend.
+
+Paste the following line inside:
+
+```python
+from alignak_backend.app import app
+```
+
+Save your file and quit. Then simply run the following command:
+
+```bash
+# Replace xxx.xxx.xxx.xxx by IP of your server
+uwsgi --plugin python --wsgi-file alignakbackend.py --callable app --socket xxx.xxx.xxx.xxx:5000 --protocol=http --enable-threads
+```
+
 # Alignak Backend modules
 
 Now you have alignak daemons and backend running, but both do not yet communicate each other ... you need to install and configure some Alignak daemons modules.
 
-## Get the sources
+## Installation
+
+### Installation with sources
 
 Stay logged-in as user _alignak_ and type:
 
 ```bash
 cd ~/repos
-# keep repos in backend
+# keep repos in backend-modules
 git clone https://github.com/Alignak-monitoring-contrib/alignak-module-backend.git backend-modules
 cd backend-modules
 ```
@@ -281,6 +359,12 @@ pip install -r requirements.txt
 sudo python setup.py install
 ```
 
+### Installation with pip
+
+Just type the following command:
+
+`pip install alignak_module_backend`
+
 ## Configuring Alignak modules
 
 The installation setup script created some configuration files in your */usr/local/etc/alignak/arbiter_cfg/modules* directory.
@@ -288,36 +372,34 @@ The installation setup script created some configuration files in your */usr/loc
 You must configure the backend URL and login information in the three following files:
 
 ```bash
-cd /usr/local/etc/alignak/arbiter_cfg
-sudo vi modules/mod-alignakbackendarbit.cfg
-sudo vi modules/mod-alignakbackendbrok.cfg
-sudo vi modules/mod-alignakbackendsched.cfg
+cd /usr/local/etc/alignak/arbiter
+sudo vi modules/mod-alignak_backend_arbiter.cfg
+sudo vi modules/mod-alignak_backend_broker.cfg
+sudo vi modules/mod-alignak_backend_scheduler.cfg
 ```
 
-> **Hint:** Currently, you simply have to uncomment the `username` and `password` variables to allow connection to the backend. Check **api_url** in this files too !
+> **Hint:** Check the `username` and `password` variables to allow connection to the backend. Check also **api_url** in this files too !
 
-Then you need to configure Alignak daemons to inform about the existing modules:
-
-> **Note:** Currently, the scheduler backend module is broken and you should not configure it! Fixes is coming soon for the data retention...
+Then you need to configure Alignak daemons to inform about the existing modules. The name of the module to be added must be the **same as the name defined as aliases** in your configuration files that you have defined above !
 
 ```bash
-cd /usr/local/etc/alignak/arbiter_cfg
-sudo vi daemons_cfg/arbiter-master.cfg
+cd /usr/local/etc/alignak/arbiter
+vi daemons_cfg/arbiter-master.cfg
 
     # Backend module
-    modules    	 alignakbackendarbit
+    modules    	 backend_arbiter
 
 
-sudo vi daemons_cfg/broker-master.cfg
-
-    # Backend module
-    modules    	 alignakbackendbrok
-
-
-sudo vi daemons_cfg/scheduler-master.cfg
+vi daemons_cfg/broker-master.cfg
 
     # Backend module
-    modules    	 alignakbackendsched
+    modules    	 backend_broker
+
+
+vi daemons_cfg/scheduler-master.cfg
+
+    # Backend module
+    modules    	 backend_scheduler
 ```
 
 Once you configured Alignak daemons, restart Alignak and that's all:
@@ -328,11 +410,15 @@ Once you configured Alignak daemons, restart Alignak and that's all:
 
 > **Tips:** If an error occured, you will have some information about it in the log files located in */usr/local/var/log/alignak*.
 
+Normally you can see, in backend logs (or in your terminal if you start backend from command uwsgi), the backend discussed with alignak daemons.
+
 # Alignak Backend import tool
 
 Now you have alignak daemons and backend running, you must fill the backend database with some data about the hosts and services you need to monitor. The Alignak backend provides a REST API that you can use with cUrl or any other tool like Postman, but what about importing your Nagios-like flat files configuration auto-magically ?
 
-## Get the sources
+## Bakend Import installation
+
+### Installation with sources
 
 Stay logged-in as user _alignak_ and type:
 
@@ -350,9 +436,17 @@ pip install -r requirements.txt
 sudo python setup.py install
 ```
 
+### Installation with pip
+
+With pip, you just have to run:
+
+```bash
+pip install alignak_backend_import --user
+```
+
 ## Launching alignak-backend-import
 
-The alignak-backend-import setup script creates a script called `alignak_backend_import` in your */usr/local/bin* directory.
+The alignak-backend-import setup script creates a script called `alignak_backend_import` in your */usr/local/bin* directory. If you installed by pip, the script is in `/home/alignak/.local/bin/`.
 
 You can run the installed command line script with some options. Try this to get the available command line options:
 
@@ -360,7 +454,7 @@ You can run the installed command line script with some options. Try this to get
 alignak_backend_import -h
 ```
 
-An exemple configuration is available in the project directory: *test/shinken_cfg_files/default*. You can import this configuration in your Alignak backend with this command:
+An exemple configuration is available in the project directory: *test/shinken_cfg_files/default*. There is one too in `alignak_backend_modules` too. You can import this configuration in your Alignak backend with this command:
 
 ```bash
 alignak_backend_import -d -b http://127.0.0.1:5000 test/shinken_cfg_files/default/_main.cfg
@@ -370,7 +464,7 @@ Some explanations:
 
 - `-d` delete the former existing elements in the backend
 - `-b http://127.0.0.1:5000` specifies to use the local backend on port 5000
-- `test ... _main.cfg` is the flat files configuration entry point
+- `test/[...]/_main.cfg` is the flat files configuration entry point
 
 
 > **Fix and Tips:** A detailed documentation is available here: [Doc alignak-backend-import](http://alignak-backend-import.readthedocs.io/en/latest/index.html).
@@ -396,8 +490,6 @@ You can now proceed to install:
 ```bash
 pip install -r requirements.txt
 sudo python setup.py install
-# Make run.sh executable
-chmod +x run.sh
 ```
 
 Then go back to our folder for apps and copy settings file:
@@ -428,7 +520,7 @@ Be back to _~/app/webui_ folder and type:
 
 ```bash
 # create symlink, like this update when updating repos
-ln -s ~/repos/webui/bin/run.sh ~/app/webui/run.sh
+cp ~/repos/webui/bin/run.sh ~/app/webui/run.sh
 cp ~/repos/webui/bin/alignak_webui.py alignakwebui.py
 ```
 
@@ -439,11 +531,11 @@ Then launch the application like this:
 uwsgi --plugin python --wsgi-file alignakwebui.py --callable app --socket xxx.xxx.xxx.xxx:5001 --protocol=http --enable-threads
 ```
 
+**WARNING:** be sure to not name your file *alignak_webui*, otherwise you will have conflicts with the library of webui.
+
 > **Fix and Tips:** If you meet some problems, please check you installed _MongoDB_ and _uwsgi-plugin-python_. Check errors during the installation process. Try to remove any _*.pyc_ in the current folder. Try to logout and login to see if that's not a problem of paths updating.
 
-
 > **Note:** It exists many parameters to configure and optimize uWSGI; please see: [uWSGI project](http://uwsgi-docs.readthedocs.io/en/latest/WSGIquickstart.html).
-
 
 ### Use pre built scripts
 
@@ -482,10 +574,13 @@ ssh -L 5001:127.0.0.1:5001 login@ip_vm_test
 
 Where *ip_vm_test* is your IP test server (and not his local loop !). Then simply open [http://127.0.0.1:5001](http://127.0.0.1:5001) in your favorite browser.
 
-# Additional tools
+# Additional tools and repositories
 
 There is other tools to complete Alignak Suite. Here is the list :
 
-* [Alignak-App](http://alignak-app.readthedocs.io/en/develop/index.html): App Indicator for Alignak who display notifications when something's wrong.
+* [Alignak-App](https://github.com/Alignak-monitoring-contrib/alignak-app): desktop application, in the system tray, for Linux or Windows.
+* [Python 2.7 / 3.x client](https://github.com/Alignak-monitoring-contrib/alignak-backend-client): backend client in python.
+* [PHP library](https://github.com/Alignak-monitoring-contrib/alignak-backend-php-client): backend client in PHP
+
 
 # WIP
