@@ -18,7 +18,7 @@ date: 2016-12-21T11:20:00+01:00
 
 # Introduction
 
-In this tutorial, we'll install [Nagios Plugins](https://www.nagios.org/projects/nagios-plugins/) to get scripts who help to monitor hosts or services. We also install [Nagios SNMP from Manubulon](http://nagios.manubulon.com/) who give general snmp scripts.
+In this tutorial, we'll install [Nagios Plugins](https://www.nagios.org/projects/nagios-plugins/) to get scripts who help to monitor hosts or services. We also install [Nagios SNMP from Manubulon](http://nagios.manubulon.com/) who give general snmp scripts (Manubulon scripts are no longer really maintained, but remain useful).
 
 This kind of scripts is very useful when you want to monitor your infrastructure. This list is obviously not exhaustive and many other scripts are available on the internet. Links will be available at the end of this tutorial.
 
@@ -30,7 +30,9 @@ For scripts using the [snmp protocol](https://fr.wikipedia.org/wiki/Simple_Netwo
 
 # Enable SNMP
 
-On many devices you have a configuration section to enable SNMP services. For example, on printers, you'll have a web interface who let you configure your printer. Just find the right section or refer to your manual. For switches, this is usually about the same way. On others, you will need to go through command lines.
+On many devices you have a configuration section to enable SNMP services. For example, on printers, you'll have a web interface which lets you configure the SNMP agent of your printer. Just find the right section or refer to your manual.
+
+For switches, this is usually about the same way. On others, you will need to go through command lines.
 
 Below, you will find an example for Linux and Windows.
 
@@ -68,7 +70,7 @@ Dec 21 02:55:58 alignak snmpd[17153]: NET-SNMP version 5.7.3
 
 As you can see **snmpd** daemon is verbose and you see if there is any problem in your configuration.
 
-Here I had some warnings. This king of warning is not necessarily serious but you must pay attention to this kind of alert. By doing a quick search on the internet, I saw that it was just an oversight of a previous version, so I've just comment this lines.
+Here I had some warnings. This kind of warning is not necessarily serious but you must pay attention to this kind of alert. By doing a quick search on the internet, I saw that it was just an oversight of a previous version, so I have just commented those lines.
 
 You must now set up your service in `/etc/snmp/snmpd.conf` which defines your SNMP community. By default community is named **public** (for IPv4 and IPv6).
 
@@ -93,7 +95,7 @@ Don't forget to restart service after:
 sudo service snmpd restart
 ```
 
-You can also install the `snmp` package to have some command who can test your snmp configuration.
+You can also install the `snmp` package to have some commands who can test your snmp configuration.
 
 ```bash
 sudo apt-get install snmp
@@ -101,13 +103,13 @@ sudo apt-get install snmp
 snmpwalk -v1 127.0.0.1 -c mycommunity
 ```
 
-There is many other possible configurations (and tutorials) that you can find on the web.
+There are many other possible configurations (and tutorials) that you can find on the web.
 
 ## On Windows Server
 
 Usually I'm not too comfortable with Powershell, but for once I admit that it simplifies things. Then it avoids opening Server Manager. So open a Powershell console with Administrator rights and type the following commands:
 
-**Note:** The following configuration is under Windows Server 2012.
+**Note:** The following configuration is with Windows Server 2012.
 
 ```powershell
 PS C:\Windows\system32> Get-WindowsFeature -Name *snmp* | Install-WindowsFeature
@@ -139,7 +141,7 @@ Here you can define your community. Normally, by default, you have public define
 
 ### Agent Tab
 
-Here you can define SNMP contact and place of the server, as well as the services he manage. In general, I let default options...
+Here you can define SNMP contact and place of the server, as well as the services it manages. Usually, I keep default options...
 
 Now your SNMP is configured. Unfortunately, I have not found a Powershell command to test the SNMP configuration. But we can do it from a Linux server:
 
@@ -149,7 +151,7 @@ snmpwalk -v1 <ip_server> -c mycommunity
 
 # Nagios Plugins
 
-Nagios commands are usefull to check services of an host locally. The official Plugins are the base, but there are thousands of them found on the internet. Here is how to install Officials:
+Nagios commands are useful to check services of an host locally. The official Plugins are the base, but there are thousands of them found on the internet. Here is how to install Officials:
 
 **Note:** You must be under Linux system to install this plugins.
 
@@ -169,7 +171,7 @@ sudo make install
 cd ..; rm nagios-plugins-2.1.4.tar.gz
 ```
 
-Now if you check your install (by default in `/usr/local/nagios/`) you will find a folder called `libexec` who contains all plugins ! Most followthe syntax `check_<service>`. For example, the plugin SMTP is called `check_smtp`.
+Now if you check your install (by default in `/usr/local/nagios/`) you will find a folder called `libexec` who contains all plugins ! Most follow the syntax `check_<service>`. For example, the plugin SMTP is called `check_smtp`.
 
 All of this plugin have generally an help command, callable by `-h`:
 
@@ -185,7 +187,7 @@ This will tell you how to use the plugin. Take time to carefully look at each pl
 
 # Nagios SNMP from Manubulon
 
-This other plugins are very usefull to get data from your servers. There are not many but all are very useful.
+This other plugins are very useful to get data from your servers.
 
 To get this plugins, just download the archive on website : [http://nagios.manubulon.com/](http://nagios.manubulon.com/).
 
@@ -220,7 +222,7 @@ sudo cpanm Getopt::Long
 
 ## Install scripts
 
-Now that you have all the requirements, launch install script. He will check your configuration and you'll may be able to change folders to suit your installation:
+Now that you have all the requirements, launch install script. It will check your configuration and you'll may be able to change folders to suit your installation:
 
 ```bash
 user@server:$ sudo ./install.sh
@@ -275,14 +277,14 @@ Installing check_snmp_storage.pl : OK
 
 Installation completed OK
 You can delete all the source files and directory
-Remember to look for informtation at http://www.manubulon.com/nagios/
+Remember to look for information at http://www.manubulon.com/nagios/
 ```
 
-You can now see the new plugins installed in your nagios folder (here _/usr/local/nagios/libexec/_). As you can see, script follow this syntax: `check_snmp_<service>`.
+You can now see the new plugins installed in your nagios folder (here _/usr/local/nagios/libexec/_). As you can see, the scripts follow this syntax: `check_snmp_<service>`.
 
 # Using SNMP scripts and others
 
-Most of these plugins have common commands. In general, you must specify:
+Most of these plugins have common commands. Usually, you must specify:
 
 * The target host with `-H <host_ip>`
 * The warning level with `-w` follow by an integer or a percentage
