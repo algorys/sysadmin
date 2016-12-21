@@ -203,32 +203,7 @@ Alignak configuration files are located in the */usr/local/etc/alignak* director
 
 ## Nagios Plugins
 
-To launch checks on host/services, Alignak need to have some installed plugins. Most often used plugins are the Nagios one. To install Nagios plugins, it's simple, you've just to download it on official website : [Nagios-plugins](https://nagios-plugins.org/). You can install it by pip or package but with sources, you make sure that plugins are up to date.
-
-```bash
-cd ~; mkdir tools; cd tools
-wget http://www.nagios-plugins.org/download/nagios-plugins-2.1.1.tar.gz
-tar -xzvf nagios-plugins-2.1.1.tar.gz
-# Now install it
-cd nagios-plugins-2.1.1/
-./configure --with-nagios-user=alignak --with-nagios-group=alignak
-make
-sudo make install
-```
-
-Your plugins are installed. They may not be installed in the directory `/usr/lib/nagios/plugins`. In this case , search for where they are (`whereis nagios` for example) and edit the file `/usr/local/etc/alignak/arbiter_cfg/resource.d/paths.cfg` accordingly:
-
-```bash
-vi /usr/local/etc/alignak/arbiter_cfg/resource.d/paths.cfg
-
-    $NAGIOSPLUGINSDIR$=/usr/local/nagios/libexec
-```
-
-Once installation finished, restart Alignak to make it know the new parameters:
-
-```bash
-/usr/local/etc/init.d/alignak restart
-```
+The commands you'll set in your configuration files will mostly be commands provided by the Nagios plugins. You can find a tutorial on this site : [Install Nagios Plugins](/2016/12/install-nagios-and-snmp-plugins).
 
 # Alignak Backend
 
