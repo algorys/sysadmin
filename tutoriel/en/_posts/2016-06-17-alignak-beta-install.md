@@ -211,8 +211,21 @@ The commands you'll set in your configuration files will mostly be commands prov
 
 You have to install `MongoDB` and `uwsgi` to run _alignak-backend_, so here we go:
 
+For uwsgi:
+
 ```bash
-sudo apt-get install mongodb uwsgi uwsgi-plugin-python
+sudo apt-get install uwsgi uwsgi-plugin-python
+```
+
+For MongoDB, you can install it from your distribution packages, but here we use official [MongoDB tutorial](https://docs.mongodb.com/master/tutorial/):
+
+```bash
+# Following example is for Ubuntu 16.04LTS
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
+echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/testing multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
+sudo apt-get update
+sudo apt-get install -y mongodb-org
+sudo service mongod start
 ```
 
 ## Backend Installation
