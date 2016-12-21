@@ -5,7 +5,7 @@ lang: fr
 ref: nagios-plugins-snmp
 modified:
 description: Comment installer les Plugins Nagios et les scripts SNMP
-tags: [tutoriel, snmp, monitoring]
+tags: [tutoriel, monitoring]
 image:
   feature:
   credit:
