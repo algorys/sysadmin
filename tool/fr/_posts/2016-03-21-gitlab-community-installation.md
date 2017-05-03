@@ -30,7 +30,7 @@ Pour déployer un tel serveur, je recommande d'avoir déjà une bonne connaissan
 
 * Un serveur Linux avec les droits `root`. 
 
-_Ce tutoriel a été réalisé sur un Ubuntu Server 14.04.4 LTS_
+_Ce tutoriel a été réalisé sur un Ubuntu Server 14.04.4 LTS et 16.04 LTS_
 
 # Dépendances
 
@@ -38,7 +38,7 @@ Comme tout serveur, Gitlab a besoin de quelques dépendances pour fonctionner. N
 
 ```bash
 sudo apt-get update
-sudo apt-get install -y build-essential zlib1g-dev libyaml-dev libssl-dev libgdbm-dev libreadline-dev libncurses5-dev libffi-dev curl openssh-server checkinstall libxml2-dev libxslt-dev libcurl4-openssl-dev libicu-dev logrotate python-docutils pkg-config cmake nodejs
+sudo apt-get install -y build-essential zlib1g-dev libyaml-dev libssl-dev libgdbm-dev libreadline-dev libncurses5-dev libffi-dev curl openssh-server checkinstall libxml2-dev libxslt-dev libcurl4-openssl-dev libicu-dev logrotate python-docutils pkg-config cmake 
 ```
 
 Si vous voulez utiliser [Kerberos](https://fr.wikipedia.org/wiki/Kerberos_(protocole)), installer la librairie suivante :
@@ -111,9 +111,17 @@ Voilà, vous avez maintenant la configuration requise pour pouvoir installer Git
 
 # Ruby
 
-Pour fonctionner Gitlab aura besoin de Ruby dans sa version 2.1.x. Les versions de Ruby 2.2 et 2.3 ne sont actuellement pas supportées. Il est indiqué aussi que les gestionnaires de version pour Ruby ne sont pas non plus supportés et peuvent poser différents problèmes pour vos futurs `push` et `pull` sur le serveur. Nous allons donc installer Ruby _à l'ancienne_ !
+Pour fonctionner Gitlab **8.x** aura besoin de Ruby dans sa version 2.1.x. Les versions de Ruby 2.2 et 2.3 ne seront pas supportées.
 
-Vérifiez que vous n'avez pas de version de ruby d'installée et si le cas se présetnte, désinstalllez-la :
+Gitlab **9.x** quant à luine supporte que Ruby 2.3.x.
+
+Il est indiqué aussi que les gestionnaires de version pour Ruby ne sont pas non plus supportés et peuvent poser différents problèmes pour vos futurs `push` et `pull` sur le serveur. 
+
+## Ruby 2.1
+
+Nous allons donc installer Ruby _à l'ancienne_ !
+
+Vérifiez que vous n'avez pas de version de ruby d'installée et si le cas se présetnte, désinstallez-la :
 
 ```bash
 sudo apt-get remove rubyX.x
@@ -140,6 +148,14 @@ sudo make install
 
 Cela va prendre un peu de temps, vous pouvez allez boire un café en attendant !
 
+## Ruby 2.3
+
+Sur les distributions récentes, il est possible que `ruby2.3` soit déjà disponible. C'est la version qui est maintenant requise pour **Gitlab 9.0**. 
+
+Les versions `2.1` et `2.2` ont été abandonnées depuis la version `8.13` de Gitlab.
+
+## Bundle
+
 Une fois l'installation de Ruby terminée, vous allez pouvoir installer la Gem `Bundler` :
 
 ```bash
@@ -150,7 +166,7 @@ Voilà Ruby est installé et prêt à être utilisé.
 
 # Go
 
-Depuis Gitlab 8.0, les requêtes HTTP de Git sont effectuée par `gitlab-workhorse`. C'est une sorte de démon écrit en Go. Pour l'installer, nous aurons besoin du compilateur Go. Les commandes suivantessont pour un Linux en 64-bit. Ajustez l'archive en fonction de votre plateforme en vous rendant sur la [page de téléchargement de Go](https://golang.org/dl/) !
+Depuis Gitlab 8.0, les requêtes HTTP de Git sont effectuée par `gitlab-workhorse`. C'est une sorte de démon écrit en Go. Pour l'installer, nous aurons besoin du compilateur Go. Les commandes suivantes sont pour un Linux en 64-bit. Ajustez l'archive en fonction de votre plateforme en vous rendant sur la [page de téléchargement de Go](https://golang.org/dl/) !
 
 ```bash
 curl -O --progress https://storage.googleapis.com/golang/go1.5.3.linux-amd64.tar.gz
@@ -161,6 +177,25 @@ sudo ln -sf /usr/local/go/bin/{go,godoc,gofmt} /usr/local/bin/
 rm go1.5.3.linux-amd64.tar.gz
 ```
 
+# Node
+
+Depuis **Gitlab 8.17**, Gitlab utilise `node >= v4.3.0` pour compiler javascript et `yarn >= v0.17.0` pour gérer ses dépendances.
+
+```bash
+# Installer node v7.x
+curl --location https://deb.nodesource.com/setup_7.x | sudo bash -
+sudo apt-get install -y nodejs
+
+# Installer yarn
+# Dans la doc officielle, voici la commande préconisée:
+curl --location https://yarnpkg.com/install.sh | sudo -u git -H bash -
+# Personnellement, Gitlab n'arrivait pas à détecter yarn par la suite
+# Si c'est votre cas, installez depuis les paquets: https://yarnpkg.com/en/docs/install
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt-get update && sudo apt-get install yarn
+```
+
 # Utilisateur Git
 
 Vous allez maintenant créer un utilisateur dédié pour Gitlab, sans mot de passe. Par convention, on donne comme nom `git` :
@@ -169,7 +204,7 @@ Vous allez maintenant créer un utilisateur dédié pour Gitlab, sans mot de pas
 sudo adduser --disabled-login --gecos 'Gitlab' git
 ```
 
-Par la suite, vous verrez que beaucoup de choses vont se retrouver dans le répertoire `HOME` de cet utilsateur.
+Par la suite, vous verrez que beaucoup de choses vont se retrouver dans le répertoire `$HOME` de cet utilsateur.
 
 # La Base de Données
 
@@ -178,16 +213,18 @@ Pour les fans de MySQL, vous allez être déçus, Gitlab ne recommande pas l'uti
 Gitlab recommande donc PostgreSQL comme base de données. Une version 9.1 minium est requise ! Installez-la si ce n'est pas déjà fait  :
 
 ```bash
-sudo apt-get install -y postgresql postgresql-client libpq-dev
+sudo apt-get install -y postgresql postgresql-client libpq-dev postgresql-contrib
 ```
 
 Puis définissez un utilisateur `git` pour Gitlab dans celle-ci :
 
 ```bash
 sudo -u postgres psql -d template1 -c "CREATE USER git CREATEDB;"
+# Créer l'extension "pg_trgm"
+sudo -u postgres psql -d template1 -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
 ```
 
-Créez la base dédiée à la production de Gitlab  et donnez tous les privilèges à l'utilsateur `git`
+Créez la base dédiée à la production de Gitlab  et donnez tous les privilèges à l'utilisateur `git`
 
 ```bash
 sudo -u postgres psql -d template1 -c "CREATE DATABASE gitlabhq_production OWNER git;"
@@ -202,10 +239,28 @@ sudo -u git -H psql -d gitlabhq_production
 Vous devriez maintenant avoir quelque chose de similaire à cela :
 
 ```sql
-psql (9.3.11)
+psql (9.x.x)
 Type "help" for help.
 
 gitlabhq_production=> 
+```
+
+Vérifiez bien que l'extension `pg_trgm` est bien activée, en tapant la commande suivante dans le CLI de PostgreSQL:
+
+```sql
+SELECT true AS enabled
+FROM pg_available_extensions
+WHERE name = 'pg_trgm'
+AND installed_version IS NOT NULL;
+```
+
+Si c'est bien activé, vous devries avoir la sortie suivante:
+
+```sql
+enabled
+---------
+ t
+(1 row)
 ```
 
 Tapez `\q` ou `CTRL-D` pour quittez la session PostgreSQL.
@@ -226,6 +281,22 @@ Il faut maintenant donner des droits à l'utilisateur `git` en l'ajoutant dans l
 sudo usermod -aG redis git
 ```
 
+Et modifier le fichier de configuration comme suit (`sudo vi /etc/redis/redis.conf`):
+
+```conf
+# Changez le port à 0
+port 0
+# Indiquez le path pour le socket de redis
+unixsocket /var/run/redis/redis.sock
+unixsocketperm 770
+```
+
+Puis redémarrez:
+
+```bash
+sudo service redis-server restart
+```
+
 Voilà, `redis-server` est prêt !
 
 # Gitlab
@@ -236,7 +307,7 @@ Allez dans le HOME de l'utilisateur `git` et cloner le dépôt :
 
 ```bash
 cd /home/git
-sudo -u git -H git clone https://gitlab.com/gitlab-org/gitlab-ce.git -b 8-6-stable gitlab
+sudo -u git -H git clone https://gitlab.com/gitlab-org/gitlab-ce.git -b 9-1-stable gitlab
 ```
 
 Maintenant il va falloir configurer Gitlab pour correspondre à ce qu'on installé précédemment :
@@ -258,7 +329,7 @@ git:
   bin_path: /usr/bin/git
 ```
 
-Bien sûr il y aura d'autres choses à configurer ultérieuremnt comme les connexions avec des comptes LDAP par exemple.
+Bien sûr il y aura d'autres choses à configurer ultérieuremnt comme les connexions avec des comptes LDAP par exemple (voir à la fin).
 
 Une fois cela fait, copiez le fichier suivant :
 
@@ -285,16 +356,24 @@ sudo -u git -H mkdir public/uploads/
 sudo chmod 0700 public/uploads
 ```
 
+Changez les permissions pour Gitlab-CI et Gitlab Pages:
+
+```bash
+sudo chmod -R u+rwX builds/
+sudo chmod -R u+rwX shared/artifacts/
+sudo chmod -R ug+rwX shared/pages/
+```
+
 Copiez maintenant le fichier `unicorn.rb` :
 
 ```bash
 sudo -u git -H cp config/unicorn.rb.example config/unicorn.rb
 ```
 
-Puis en fonction du nombre de coeurs de votre serveur et sa RAM éditez le fichier `unicorn.rb` (`sudo -u git -H vi config/unicorn.rb`). Vous pouvez voir votre nombre de coeur en tapant `nproc` dans votre terminal. Un nombre de _worker_ pour 2GB de RAM sera par exemple de 3.
+Puis en fonction du nombre de coeurs de votre serveur et sa RAM éditez le fichier `unicorn.rb` (`sudo -u git -H vi config/unicorn.rb`). Vous pouvez voir votre nombre de coeur en tapant `nproc` dans votre terminal. Un nombre de _worker_ pour 2GB de RAM, le nombre de worker est de 3 (Pour définir le nombre de worker, comptez le nombre de processeurs + 1).
 
 ```yml
-worker_processes 2
+worker_processes 3
 ```
 
 Enregistrez et quittez.
@@ -305,13 +384,15 @@ Copiez le fichier de configuration `rack_attack.rb`.
 sudo -u git -H cp config/initializers/rack_attack.rb.example config/initializers/rack_attack.rb
 ```
 
-Configurer les paramètres globaux de l'utilisateur `git`. Ce sera utilisé lorsque vous éditerez quelque chose via le navigateur web :
+Configurez les paramètres globaux de l'utilisateur `git`. Ce sera utilisé lorsque vous éditerez quelque chose via le navigateur web :
 
 ```bash
 sudo -u git -H git config --global core.autocrlf input
+sudo -u git -H git config --global gc.auto 0
+sudo -u git -H git config --global repack.writeBitmaps true
 ```
 
-Enfin, copiez le fichier de configuration pour Redis et éditez-le si vous avez modifié le PATH du _socket_ de Redis :
+Enfin, copiez le fichier de configuration pour Redis et éditez-le si vous avez modifié le PATH du _socket_ de Redis:
 
 ```bash
 sudo -u git -H cp config/resque.yml.example config/resque.yml
@@ -362,13 +443,15 @@ Bundled gems are installed into ./vendor/bundle.
 
 > **Note :** il est possible que selon votre connection certaines `gems` prennent du temps à s'installer. Soyez patient et n'interrompez pas l'installation. Si il y a la moindre erreur, `bundle` est en général assez verbeux pour vous indiquer quoi faire.
 
+> **Note :** il peut aussi arriver selon votre distribution que les fichiers `headers` de ruby ne soient pas installés, provoquant l'erreur suivante: `can't find header files for ruby at /usr/lib/ruby/include/ruby.h`. Dans ce cas, installez-les: `sudo apt-get install ruby2.x-dev`.
+
 # Installer le Shell de Gitlab
 
 Le _Shell de Gitlab_ est un logiciel de gestion de dépôt développé spécialement pour Gitlab. Pour l'installer lancez la tâche pour `gitlab-shell` :
 
 ```bash
 # Modifiez l'URL de redis si besoin
-sudo -u git -H bundle exec rake gitlab:shell:install REDIS_URL=unix:/var/run/redis/redis.sock RAILS_ENV=production
+sudo -u git -H bundle exec rake gitlab:shell:install REDIS_URL=unix:/var/run/redis/redis.sock RAILS_ENV=production SKIP_STORAGE_VALIDATION=true
 ```
 
 Cela va cloner le dépôt correspondant dans `/home/git/gitlab-shell` et créer un répertoire `repositories` dans le _HOME_ de l'utilisateur `git`. Voici la sortie console :
@@ -410,6 +493,12 @@ sudo -u git -H git clone https://gitlab.com/gitlab-org/gitlab-workhorse.git
 cd gitlab-workhorse
 sudo -u git -H git checkout v0.7.1
 sudo -u git -H make
+```
+
+La commande suivante peut être exécutée à la place pour les **dernières versions** de Gitlab:
+
+```bash
+sudo -u git -H bundle exec rake "gitlab:workhorse:install[/home/git/gitlab-workhorse]" RAILS_ENV=production
 ```
 
 # Initialiser la base de données
@@ -464,6 +553,7 @@ Ce fichier garde les clés de chiffrement pour les sessions et les variables. Il
 Maintenant, il vous faut un scrit de démarrage pour pouvoir lancer, arrêter, relancer votre serveur Gitlab proprement et facilement. Heureusement tout est déjà prévu il suffit copier le bon fichier au bon endroit :
 
 ```bash
+# Si vous n'utilisez pas les dossiers par défaut, adaptez ce fichier selon votre configuration
 sudo cp lib/support/init.d/gitlab /etc/init.d/gitlab
 sudo update-rc.d gitlab defaults 21
 ```
@@ -474,14 +564,51 @@ Activez la rotation des logs :
 sudo cp lib/support/logrotate/gitlab /etc/logrotate.d/gitlab
 ```
 
+# Gitaly
+
+Depuis **Gitlab 9.1**, Gitaly est un composant optionnel. Il vaut mieux attendre la configuration de Gitaly jusqu'à la mise à niveau vers GitLab 9.2 ou plus.
+
+```bash
+sudo -u git -H bundle exec rake "gitlab:gitaly:install[/home/git/gitaly]" RAILS_ENV=production
+```
+
+Puis configurez-le:
+
+```bash
+sudo chmod 0700 /home/git/gitlab/tmp/sockets/private
+sudo chown git /home/git/gitlab/tmp/sockets/private
+cd /home/git/gitaly
+sudo -u git -H cp config.toml.example config.toml
+# Ensuite configurez Gitaly si besoin
+sudo -u git -H vi config.toml
+```
+
+Activez-le dans le fichier **init** de Gitlab (`sudo vi /etc/init.d/gitlab`)
+
+```conf
+gitaly_enabled=true
+```
+
+```bash
+# Mettez à jour les "daemons"
+sudo systemctl daemon-reload
+```
+
+Puis dans le fichier de configuration de Gitlab (`sudo -u git -H vi /home/git/gitlab/config/gitlab.yml`):
+
+```conf
+gitaly:
+    enabled: true
+```
+
 # Vérifier votre installation
 
-Maintenant que la plupart des fichiers sont configurés et prêts, il faut vérifier que tout cela peut fonctionner. Pour cela, vous allez devoir lancer les tests suivants :
+Maintenant que la plupart des fichiers sont configurés et prêts, il faut vérifier que tout cela peut fonctionner. Pour cela, vous allez devoir lancer le test suivant :
 
 ```bash
 # Vérifier le status de l'application
 sudo -u git -H bundle exec rake gitlab:env:info RAILS_ENV=production
-# Sortie de la commande :
+# Sortie de la commande (peut différer en fonction de l'installtion):
 System information
 System:     Ubuntu 14.04
 Current User:   git
@@ -515,7 +642,10 @@ Git:        /usr/bin/git
 Maintenant, il faut compiler les "assets" de Gitlab :
 
 ```bash
-sudo -u git -H bundle exec rake assets:precompile RAILS_ENV=production
+# Si vous utilisez "yarn"
+sudo -u git -H /home/git/.yarn/bin/yarn install --production --pure-lockfile
+# Ensuite
+sudo -u git -H bundle exec rake assets:precompile RAILS_ENV=production NODE_ENV
 ```
 
 Cela peut prendre un peu de temps, soyez patient...
@@ -541,7 +671,7 @@ GitLab and all its components are up and running.
 
 Voilà, votre serveur Gitlab tourne ! Félicitations ! Il ne reste plus que l'interface web à configurer.
 
-Nous allons desservir Gitlan avec Nginx, qui est de base, le serveur Web officiellement supporté par Gitlab. Installez Nginx sur votre serveur :
+Nous allons desservir Gitlab avec Nginx, qui est de base, le serveur Web officiellement supporté par Gitlab. Installez Nginx sur votre serveur :
 
 ```bash
 sudo apt-get install -y nginx
@@ -554,16 +684,13 @@ Comme depuis le début, vous avez déjà un fichier d'example à copier et vous 
 ```bash
 sudo cp lib/support/nginx/gitlab /etc/nginx/sites-available/gitlab
 sudo ln -s /etc/nginx/sites-available/gitlab /etc/nginx/sites-enabled/gitlab
+# Supprimez le serveur par défaut afin d'éviter les conflits
+sudo rm -f /etc/nginx/sites-enabled/default
 ```
 
 Configurer le fichier pour l'adapter à votre configuration (`sudo vi /etc/nginx/sites-enabled/gitlab`) :
 
 ```conf
-# Vous devrez certainement commenter les deux lignes suivantes pour que la configuration passe :
-listen 0.0.0.0:80 default_server;
-listen [::]:80 default_server;
-# Sinon, supprimer le site par défaut de Nginx : sudo rm -f /etc/nginx/sites-enabled/default
-
 # Rajouter le FQDN de votre installation
 server_name gitlab.local.fr;
 ```
