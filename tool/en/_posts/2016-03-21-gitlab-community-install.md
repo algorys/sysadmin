@@ -75,7 +75,7 @@ Now you have all requirement to install Gitlab, but the road is still long...
 
 Gitlab need at least Ruby 2.1.x for Gitlab < 9.0 and Ruby 2.3 for Gitlab >= 9.0. So be sure to install the right version !
 
-It is also indicated that the version managers for Ruby are also not supported / recommended and may pose different problems for your future `push` and` pull` on the server.
+It is also indicated that the version managers for Ruby are also not supported / recommended and may pose different problems for your future `push` and `pull` on the server.
 
 ## Ruby 2.1
 
