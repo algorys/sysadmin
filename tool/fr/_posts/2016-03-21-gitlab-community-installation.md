@@ -341,12 +341,12 @@ sudo -u git -H chmod 0600 config/secrets.yml
 Assurez vous que Gitlab puisse écrire dans les répertoires suivants :
 
 ```bash
+sudo chown -R git log/
+sudo chown -R git tmp/
 sudo chmod -R u+rwX,go-w log/
 sudo chmod -R u+rwX tmp/
 sudo chmod -R u+rwX tmp/pids/
 sudo chmod -R u+rwX tmp/sockets/
-sudo chmod -R u+rwX builds/
-sudo chmod -R u+rwX shared/artifacts/
 ```
 
 Créez maitenant un dossier `public/uploads/` et assurez-vous que personne d'autre puisse y écrire :
@@ -364,13 +364,14 @@ sudo chmod -R u+rwX shared/artifacts/
 sudo chmod -R ug+rwX shared/pages/
 ```
 
-Copiez maintenant le fichier `unicorn.rb` :
+Copiez maintenant le fichier `unicorn.rb` et éditez-le :
 
 ```bash
 sudo -u git -H cp config/unicorn.rb.example config/unicorn.rb
+sudo -u git -H vi config/unicorn.rb
 ```
 
-Puis en fonction du nombre de coeurs de votre serveur et sa RAM éditez le fichier `unicorn.rb` (`sudo -u git -H vi config/unicorn.rb`). Vous pouvez voir votre nombre de coeur en tapant `nproc` dans votre terminal. Un nombre de _worker_ pour 2GB de RAM, le nombre de worker est de 3 (Pour définir le nombre de worker, comptez le nombre de processeurs + 1).
+Puis en fonction du nombre de coeurs de votre serveur et sa RAM, définissez le nombre de processus. Vous pouvez voir votre nombre de coeur en tapant `nproc` dans votre terminal. Pour 2GB de RAM, le nombre de worker est de 3 maximum (Pour définir le nombre de worker, comptez le nombre de processeurs + 1).
 
 ```yml
 worker_processes 3
@@ -422,7 +423,7 @@ sudo -u git -H chmod o-rwx config/database.yml
 
 ## Installer les Gems
 
-Maintenant il va falloir installer les gems avec `bundler`. Assurez-vous que vous ayez une version supérieur ou égale à `1.5.2` (`bundle -v`) et lancez l'installation des gems :
+Maintenant il va falloir installer les gems avec `bundler`. Assurez-vous que vous ayez une version supérieur ou égale à `1.5.2` (Exécutez `bundle -v` pour voir la version) et lancez l'installation des gems :
 
 ```bash
 # Pour une installation avec PostgreSQL. 
@@ -454,7 +455,7 @@ Le _Shell de Gitlab_ est un logiciel de gestion de dépôt développé spéciale
 sudo -u git -H bundle exec rake gitlab:shell:install REDIS_URL=unix:/var/run/redis/redis.sock RAILS_ENV=production SKIP_STORAGE_VALIDATION=true
 ```
 
-Cela va cloner le dépôt correspondant dans `/home/git/gitlab-shell` et créer un répertoire `repositories` dans le _HOME_ de l'utilisateur `git`. Voici la sortie console :
+Cela va cloner le dépôt correspondant dans `/home/git/gitlab-shell` et créer un répertoire `repositories` dans le _HOME_ de l'utilisateur git. Voici la sortie console :
 
 ```bash
 WARNING: This version of GitLab depends on gitlab-shell 2.6.11, but you're running Unknown. Please update gitlab-shell.
@@ -564,7 +565,7 @@ Activez la rotation des logs :
 sudo cp lib/support/logrotate/gitlab /etc/logrotate.d/gitlab
 ```
 
-# Gitaly
+# Gitaly (pour Gitlab 9.1 seulement)
 
 Depuis **Gitlab 9.1**, Gitaly est un composant optionnel. Il vaut mieux attendre la configuration de Gitaly jusqu'à la mise à niveau vers GitLab 9.2 ou plus.
 
@@ -741,7 +742,7 @@ Si toutes les données sont **vertes**, votre configuration est fonctionnelle !
 
 # Visistez l'interface Web
 
-Vous devriez pouvoir ouvrir votre navigateur et pointer vers le FQDN correspondant (ici [http://glpi.local.fr](http://glpi.local.fr) ) et arriver devant la page suivante :
+Vous devriez pouvoir ouvrir votre navigateur et pointer vers le FQDN correspondant (ici [http://gitlab.local.fr](http://gitlab.local.fr) ) et arriver devant la page suivante :
 
 <figure>
     <img src="{{ site.url }}/images/gitlab/gitlab_accueil.png" alt="">
@@ -759,7 +760,7 @@ Voilà, votre serveur Gitlab est prêt à recevoir vos dépôts !
 
 ## Utilisateurs standards
 
-Si vous souhaitez que vos utilisateurs s'enregistrent tout seuls, vous n'avez rine à configurer car par défaut Gitlab propose à l'accueil de s'enregistrer. Vous pouvez désactiver cela dans la zone _Admin_(la petite clé en haut à droite) => Settings. décochez la case **Sign-up enabled**.
+Si vous souhaitez que vos utilisateurs s'enregistrent tout seuls, vous n'avez rien à configurer car par défaut Gitlab propose à l'accueil de s'enregistrer. Vous pouvez désactiver cela dans la zone _Admin_(la petite clé en haut à droite) => Settings. décochez la case **Sign-up enabled**.
 
 ## Utilisateurs LDAP
 
@@ -795,7 +796,7 @@ Enregistrez et quittez. Vous devez redémarrez le serveur Gitlab pour que cela s
 sudo service gitlab restart
 ```
 
-Vous pouvez toujours vous connecter avec votre compte **root** (heureusement...). Si vous allez dans la zone Admin, vous devriez voir une pastille **verte** à côté de LDAP signalant qu'il est bien activé.
+Vous pourrez toujours vous connecter avec votre compte **root** (heureusement...). Si vous allez dans la zone Admin, vous devriez voir une pastille **verte** à côté de LDAP signalant qu'il est bien activé.
 
 Déconnectez-vous ! Vous devriez voir un onglet **DOMAIN** qui correspond à une connexion utilisateur LDAP et un onglet **Standard** poour votre compte **root** par exemple. Tentez une connexion avec un compte LDAP, normalement cela devrait marcher.
 
@@ -805,7 +806,7 @@ Vous allez voir que chaque utilisateur aura un espace de nom (souvent le nom de 
 
 # Conclusion
 
-Gitlab n'est pas forcément évident à monter, ni à configurer mais si on est patient, il est en fait très facile d'utilisation. L'équipe fait toujours des documentations très complète, même si parfois ils ne pensent pas à tout évidemment. 
+Gitlab n'est pas forcément évident à monter, ni à configurer mais si on est patient, il est en fait très facile d'utilisation. L'équipe de Gitlab fait toujours des documentations très complète ! 
 
 Pour le moment votre serveur est vide, il ne vous reste plus qu'à rajouter des projets et à utiliser Git avec. Je ne ferais pas de tutoriels sur la manière dont on créé un projet car Gitlab donne toutes les commandes nécessaires à la création d'un dépôt, son clonage, le rajout des branches, la création de README, etc...
 
