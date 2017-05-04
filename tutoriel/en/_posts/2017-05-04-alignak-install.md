@@ -20,17 +20,17 @@ date: 2017-05-04T13:20:05+01:00
 
 Alignak is a monitoring framework. It is used to check your IT (or over) and to keep you informed about problems and performance degradation (mail, SMS, XMPP…). It can be used from small environments to very large (multi-datacenter, fail-over, load-balancing).
 
-**WARNING:** Alignak is still under development and may be unstable ! The first release is however very close.
+**WARNING:** Alignak is still under development but is yet stable enough! The first release is however very close.
 
-During this tutorial, we'll install Alignak and its satellites, who are written mainly in Python. Those applications require a minimum knowledge with Linux and to be resourceful.
+During this tutorial, we'll install Alignak and its satellites, who are written mainly in Python. Despite Alignak team is trying to make it an easy to set-up monitoring solution, Alignak and its satellites require a minimum knowledge with Linux and being resourceful.
 
-It can come in addition to the demo tutorial provided by the Alignak team: [Alignak Demo](https://github.com/Alignak-monitoring-contrib/alignak-demo).
+This tutorial comes in addition to the demo tutorial provided by the Alignak team: [Alignak Demo](https://github.com/Alignak-monitoring-contrib/alignak-demo).
 
 Almost all of Alignak's repositories have stable versions available via `pip`. But I'll try to provide each repository URL each time you install a new software.
 
 # Prerequisites
 
-> **Note:** This tutorial was performed on an Ubuntu 16.04 LTS server. Other Linux are also compatible.
+> **Note:** This tutorial was run on an Ubuntu 16.04 LTS server. Other Linux distributions are also compatible.
 
 ## Mandatory Requirements
 
@@ -58,9 +58,9 @@ It is recommended also to upgrade default pip:
 sudo pip install --upgrade pip
 ```
 
-## Optional Requirements
+## Optional requirements
 
-This tutorial currently use **screen** because the scripts provided by Alignak use it:
+This tutorial currently uses **screen** because the default scripts provided by Alignak use it:
 
 ```bash
 sudo apt-get install screen
@@ -83,15 +83,15 @@ Ctrl a+d
 Ctrl a+n
 ```
 
-# Alignak Base
+# Alignak base
 
-> **Note:** You've to know that all Alignak components need a root account (or sudo privileges) to get installed.
+> **Note:** You have to know that all Alignak components need a root account (or sudo privileges) to get installed.
 
 Alignak need also an **alignak** user. Don't create it yet, we'll create after with a script.
 
-Many components will be installed with pip, only Framework is installed with Git. If you want to install from the repository also, it is recommended to use only **develop branch**. We try to make sure that the develop branch is always as stable as possible !
+Many components will be installed with pip, only the Alignak framework is installed with Git. If you want to install from the repository also, it is recommended to use only the **develop branch**. Alignak team makes sure that the develop branch of all the repositories is always a stable version.
 
-## Alignak Framework
+## Alignak framework
 
 > **Repos:** [Alignak](https://github.com/Alignak-monitoring/alignak)
 
@@ -108,9 +108,9 @@ cd alignak/
 sudo pip install -v .
 ```
 
-Pay attention to the end message,  it will already give you a lot of indications on what is good or not.
+Pay attention to the end message, it will already give you a lot of indications on what is good or not.
 
-As you can see, alignak does not found **alignak** user / group and say also that you've to set some permissions on specific folders.
+As you can see, Alignak installer did not found any **alignak** user / group and reports also that you've to set some permissions on specific folders.
 
 To correct this, run the following script:
 
@@ -120,7 +120,7 @@ sudo ./dev/set_permissions.sh
 
 You'll have the following output:
 
-```bash
+```
 Checking / creating 'alignak' user and users group
 Checking / creating 'nagios' users group
 Adding group `nagios' (GID 117) ...
@@ -140,11 +140,13 @@ Terminated
 
 That's all for the framework.
 
+> **Note:** Alignak framework is enough to check the monitored system and get information about the detected problems thanks to the notifications. But we need more than this... what about a friendly user interface, logs retention, performance data...? 
+
 ## Alignak Backend
 
 > **Repos:** [Alignak Backend](https://github.com/Alignak-monitoring-contrib/alignak-backend)
 
-The backend of Alignak is the heart of solution. To run it, you'll need to have a running Mongo database (see above).
+The Alignak backend is the core of the monitoring solution. To run it, you'll need to have a running Mongo database (see above).
 
 To install alignak-backend:
 
@@ -152,7 +154,7 @@ To install alignak-backend:
 sudo pip install alignak-backend
 ```
 
-You can also install the **alignak-backend-import** tool. Alignak-backend-import will be used to import your config files after.
+You can also install the **alignak-backend-import** tool. Alignak-backend-import will be used to import your existing Nagios/Shinken configuration files later.
 
 > **Repos:** [Alignak Backend Import](https://github.com/Alignak-monitoring-contrib/alignak-backend-import)
 
@@ -178,25 +180,23 @@ sudo service mongod start
 
 > **Repos:** [Alignak WebUI](https://github.com/Alignak-monitoring-contrib/alignak-webui)
 
-The WebUI is the the web interface for Alignak monitoring framework. To install it, run the followng command:
+The WebUI is the the Web User Interface for the Alignak solution. To install it, run the following command:
 
 ```bash
 sudo pip install alignak-webui
 ```
 
-In fact, if you want to use alignak you're yet ready. But alignak still has many components that are useful.
+In fact, if you want to use Alignak in a comfortable way you're yet ready. But Alignak still has many components that are useful.
 
 # Checks
 
-> **Note:** You do not have to **install all the checks** below. Take what you are interested in and match your infrastructure.
-
-This commands will be used to check the status of your services and each have a syntax of their own !
+> **Note:** You do not have to **install all the checks** below. Choose only what you are interested in and match your infrastructure.
 
 The most known is [Nagios Plugins](https://www.nagios.org/projects/nagios-plugins/). You can find a tutorial on this website on how install and use them and also for SNMP plugins:
 
 * [Install Nagios and SNMP plugins](/2016/12/install-nagios-and-snmp-plugins)
 
-There are many other checks available for each protocol on Alignak organization:
+There are many other checks packages available on the [Alignak monitoring contributions Github organization](https://github.com/Alignak-monitoring-contrib):
 
 ```bash
 # Checks hosts thanks to NRPE Nagios active checks protocol
@@ -219,17 +219,17 @@ sudo pip install alignak-checks-windows-nsca
 sudo pip install alignak-checks-wmi
 ```
 
-You can add later if necessary.
+You can add more later if necessary.
 
 # Alignak Modules
 
-Alignak modules add some features to Alignak Framework. Some are necessary for the essential alignak features (like retention or logs), others are fully optionnal.
+Alignak modules add some features to the Alignak framework. Some are necessary for the essential alignak features (like monitoring logs or performance data), others are fully optionnal.
 
 ## Backend Module
 
 > **Repos:** [Alignak Module Backend](https://github.com/Alignak-monitoring-contrib/alignak-module-backend)
 
-The Alignak module Backend is needed for retention, logs, timeseries, ...
+The Alignak Backend modules are needed for getting the configuration from a database, storing the monitored items live state, storing the logs, sending performance data to timeseries databases...
 
 ```bash
 sudo pip install alignak-module-backend
@@ -239,17 +239,27 @@ sudo pip install alignak-module-backend
 
 > **Repos:** [Alignak Logs Backend](https://github.com/Alignak-monitoring-contrib/alignak-module-logs)
 
-The logs module add some logs for all monitoring events: alerts, notifications... This module is very usefull.
+The logs module creates log files for all the monitoring events: alerts, notifications... This module is a must-have to track all your monitored system events.
 
 ```bash
 sudo pip install alignak-module-logs
+```
+
+## Web services
+
+> **Repos:** [Alignak Web Services](https://github.com/Alignak-monitoring-contrib/alignak-module-ws)
+
+The Web Services module exposes Web services to get information from Alignak (logs, daemons status), notify external commands to Alignak or push checks results to Alignak. This module is also used by the Alignak Web UI to interact with the monitored systems thanks to commands.
+
+```bash
+sudo pip install alignak-module-ws
 ```
 
 ## Notifications
 
 > **Repos:** [Alignak Notifications](https://github.com/Alignak-monitoring-contrib/alignak-notifications)
 
-This package will add some command to send notifications via email, XMPP, ... This is usefull if you want to be prevent when something goes wrong or not:
+This package will add commands to send notifications using HTML email, XMPP, ... very useful if you want to be notified when something goes wrong:
 
 ```bash
 sudo pip install alignak-notifications
@@ -257,7 +267,7 @@ sudo pip install alignak-notifications
 
 ## Other Modules
 
-> **Repos:** The following modules are all available under [Alignak Contrib](https://github.com/Alignak-monitoring-contrib/) organization.
+> **Repos:** The following modules are all available under [Alignak monitoring contributions Github organization](https://github.com/Alignak-monitoring-contrib).
 
 These modules add other commands or services.
 
@@ -266,8 +276,6 @@ These modules add other commands or services.
 sudo pip install alignak-module-nsca
 # Write external commands (Nagios-like) to a local named file
 sudo pip install alignak-module-external-commands
-# Notify external commands though a WS and get Alignak state with your web browser
-sudo pip install alignak-module-ws
 # Improve NRPE checks
 sudo pip install alignak-module-nrpe-booster
 ```
@@ -278,11 +286,11 @@ Now you normally have everything you need to get started.
 
 As you will see, most of the configuration will be located in `/usr/local/etc`. Inside this folder, you'll find the _alignak_, _alignak-backend_ and _alignak-webui_ folders.
 
-Other will install there configuration files inside `/usr/local/etc/alignak` (like alignak-notification for example). With this system alignak developers want the configuration of Alignak and its satellites to be centralized maximum.
+Alignak packages and modules will install there configuration files inside `/usr/local/etc/alignak` (like alignak-notification for example). With this system alignak developers want the configuration of Alignak and its satellites to be centralized maximum.
 
 > **Note:** All alignak configuration files are widely commented and detailed for each options ! Read carefully before making any changes.
 
-## Check Installation
+## Check-list for your installation
 
 Perform these checks before.
 
@@ -296,8 +304,8 @@ alignak-backend        0.8.17
 alignak-backend-client 0.9.0      
 alignak-backend-import 0.9.0      
 alignak-module-backend 0.5.0      
-alignak-module-logs    0.5.1      
-alignak-notifications  0.3.1      
+alignak-module-logs    0.5.1
+alignak-notifications  0.3.1
 alignak-webui          0.8.3.4 
 ```
 
@@ -333,66 +341,65 @@ drwxr-xr-x 2 root    root    4096 May  4 07:04 alignak-backend
 drwxr-xr-x 2 root    root    4096 May  4 07:04 alignak-webui
 ```
 
-As you can see some files in alignak folder miss _alignak_ user / group and the same thing for **log** folder.
+As you can see some files in alignak folder are missing _alignak_ user / group and the same for the **log** folder.
 
 To solve that, run the following commands:
 
 ```bash
 cd ~/repos/alignak
 sudo ./dev/set_permissions.sh
-sudo chown alignak:alignak /usr/local/var/log/alignak*
 ```
 
-Now your installation is `OK` !
+Now your installation is `OK` and ready to get adapated to your needs!
 
-We'll begin by Backend and WebUI folder who are the more simple.
+We'll begin with the Backend and WebUI folder which are the more simple to set-up.
 
-## Configure Backend
+## Configure Alignak Backend
 
-You will find 2 files in backend folder:
+You will find 2 files in the *alignak-backend* folder:
 
 * uwsgi.ini
 * settings.json
 
-Right now, just edit the following file:
+Right now, edit the following file:
 
 ```bash
 sudo vi /usr/local/etc/alignak-backend/uwsgi.ini
 ```
 
-In this file you can see that backend is by default on `0.0.0.0:5000`. You can change IP and Port but don't forget after to report this change to other files !
+In this file you can see that backend is listening by default on `0.0.0.0:5000`. You can change IP and Port but don't forget after to report this change to the other files (alignak backend modules configuration files)!
 
-The JSON file contains others configurations essentially for Bakcend data, Mongo or Timeseries.
+The JSON file contains some other configuration parameters essentially for the Backend data, Mongo or Timeseries databases.
 
-## Configure WebUI
+## Configure Alignak WebUI
 
-In WebUI Folder, you'll find 3 files:
+In *alignak-webui* folder, you'll find 3 files:
 
 * uwsgi.ini
 * settings.cfg
 * logging.json
 
-Open the `uwsgi.ini` file. You will see that this file looks much like the backend. WebUI is on `0.0.0.0:5001` by default. Personnaly I prefer to use port 80, so:
+Open the `uwsgi.ini` file. You will see that this file looks much like the backend one. WebUI is listening on `0.0.0.0:5001` by default. Personnaly I prefer to use port 80, so:
 
 ```conf
 http-socket = 0.0.0.0:80
 ```
 
-Then open `settings.cfg` the WebUI configuration file. If you've modify IP and port of your WebUI, report your chnage here. The same for backend:
+Then open the main WebUI configuration file: `settings.cfg`. If you've modified IP and port of your WebUI, report your change here:
 
 ```ini
 [bottle]
 host = 0.0.0.0
 port = 80
 
-; If you've change backend IP:PORT, search and uncomment alignak_backend line
+; If you've changed backend IP:PORT, search, update and uncomment alignak_backend line
 ; alignak_backend = http://127.0.0.1:5000
 
-; If you installed Web Service module, do the same.
-; alignak_backend = http://127.0.0.1:5000
+; If you installed Alignak Web Services module, search, update and uncomment alignak_ws line
+; alignak_ws = http://127.0.0.1:8888
 ```
 
-There is many options available to customize your WebUI.
+There are many options available to customize your WebUI. Read the comments that explain what they are used for and how to configure the options.
 
 The last file if for log formatting. You can have a look if you want, but it is not necessary to modify it.
 
