@@ -403,6 +403,404 @@ There are many options available to customize your WebUI. Read the comments that
 
 The last file if for log formatting. You can have a look if you want, but it is not necessary to modify it.
 
-## Configure Framework
+## Folders and files
 
+Now we have to define Alignak itself. If you go in folder `/usr/local/etc/alignak/`, you'll see this:
+
+```bash
+cd /usr/local/etc/alignak/
+ls -la
+-rw-rw-r-- 1 alignak alignak 6445 Jan 29 21:20 alignak.backend-run.cfg
+-rw-rw-r-- 1 alignak alignak 7756 May  4 06:44 alignak.cfg
+-rw-rw-r-- 1 alignak alignak 3808 May  4 06:44 alignak.ini
+drwxrwxr-x 8 alignak alignak 4096 May  4 06:44 arbiter/
+drwxrwxr-x 2 alignak alignak 4096 May  4 06:44 certs/
+drwxrwxr-x 2 alignak alignak 4096 May  4 06:44 daemons/
+drwxrwxr-x 3 alignak alignak 4096 May  4 06:44 sample/
+```
+
+The `alignak.cfg` file is the configuration file you'll import in the backend of Alignak. It mainly defines the files that will be imported or not in the backend. Currenlty you don't need to modify something in this file, unless you do not use the default directories.
+
+The `alignak.backend-run.cfg` is a sample file like the one above.
+
+The `alignak.ini` define your daemons configuration. I advise you to be **very careful** if you change something in this file !
+
+Folder **arbiter**: this folder contains all main configuration files. It is in this that you will define your hosts, your services, your check commands, as well as the configuration of the modules.
+
+Folder **certs**: it is used to store your certificates.
+
+Folder **daemons**: contains the daemon _ini_ files, which allow to define the folders, the pid, the port,...
+
+Folder **sample**: this last folder contains samples configuration files for your services, hosts, commands,...
+
+## Configure daemons
+
+First we will configure the daemons. Inside the `arbiter/daemons` folder, you can find one `.cfg` file for each Alignak daemon.
+
+You must at least add the modules of the Backend and the other modules that you've installed. Here is sample examples for each daemons:
+
+* Arbiter
+
+```conf
+# Address of the daemon
+address     127.0.0.1
+
+# Add the modules you have installed.
+modules     backend_arbiter
+```
+
+* Broker
+
+```conf
+# Address of the daemon
+address     127.0.0.1
+
+# Add the modules you have installed.
+modules     backend_broker, logs
+```
+
+* Poller
+
+```conf
+# Address of the daemon
+address     127.0.0.1
+
+# If you install booster modules, add them here !
+```
+
+* Reactionner
+
+```conf
+# Address of the daemon
+address     127.0.0.1
+
+# There is currently no modules available for this daemon.
+```
+
+* Receiver
+
+```conf
+# Address of the daemon
+address     127.0.0.1
+
+# If you install web-services, nsca or external-commands, add them here !
+```
+
+* Scheduler
+
+```conf
+# Address of the daemon
+address     127.0.0.1
+
+# Add the modules you have installed.
+modules     backend_scheduler
+```
+
+For each file, you can also set _timeout_, *data_timeout*, *max_check_attempts* and *check_interval* and other settings, like _spare_ or _ssl_.
+
+## Configure modules
+
+Now that you've added your modules, you've to configure them in `arbiter/modules/` folder. You'll have the module configuration files inside it.
+
+The configuration in this folder are almost the same. Be sure to update the `api_url` if your backend is not on **127.0.0.1** by default. Here is an example
+
+```conf
+# Change address according to your backend configuration
+api_url                 http://127.0.0.1:5000
+
+# Use your token instead of username and password
+# token                 xxxxxxxxxxxxx-xxxxxxx-xxxx-xxxxxxxxxxxx
+# For the first import, you can let password by default
+# It is recommended to change it afterwards
+username                admin
+password                admin
+```
+
+## Other configurations
+
+We have already see what is inside _daemons_ and _modules_ folder. But if you've installed other alignak components, like _notifications_, you'll find them in `packs` folder.
+
+For the _alignak-notifications_ case, you'll have the following:
+
+```bash
+ls -la arbiter/packs/
+drwxrwxr-x 2 alignak alignak 4096 May  4 08:08 notifications/
+-rw-rw-r-- 1 alignak alignak  128 May  4 06:44 readme.cfg
+drwxrwxr-x 2 alignak alignak 4096 May  4 08:08 resource.d/
+```
+
+Inside notifications, you'll have `notification-ways.cfg` file who define the way users will be alert. You must add your choosen notification-ways in your contacts if you want to receive notifications.
+
+You can see in this file that you've commands. They are defined in the `commands.cfg` file next to it.
+
+Finally, inside the `resource.d` folder, you have `notifications.cfg` file where you can add your SMTP settings.
+
+> **Note:** this pack requires an SMTP server for the mail notifications to be sent out. If none is available you will get WARNING logs and the notifications will not be sent out, but alignak will run anyway.
+
+## Objects
+
+The `arbiter/objects` folder normally already contains default configurations commands, contacts, hosts,...
+
+Normally, you have the localhost host already define. Let's see what it looks like by opening the following file: `objects/hosts/localhost.cfg`.
+
+```cfg
+define host{
+use                     generic-host
+contact_groups          admins
+host_name               localhost
+address                 localhost
+}
+```
+
+* use: tell to alignak which template this host will use, located in `arviter/templates` folder.
+* contact_groups: tell in which contact groups this host is. If user is not in this group, he'll not see this host.
+* host_name: the name of host
+* address: the adress of host (IP or FQDN). Be sure your server can join your DNS to resolve FQDN !
+
+Currently, localhost has no service defined, we will add one.
+
+If you've install some **checks**, they are normally located in one of the following folders: */usr/lib/nagios/plugins/* (for Nagios-plugins), */usr/local/libexec/monitoring-plugins/* (for Monitoring plugins) and */usr/local/var/libexec/alignak/* (for alignak-checks).
+
+For the following example, we'll use the [alignak-checks-snmp](https://github.com/Alignak-monitoring-contrib/alignak-checks-snmp) and the command `check_snmp_storage.pl`. If you've not installed this plugins, you can by:
+
+```
+sudo pip install alignak-checks-snmp
+sudo apt-get install libsnmp-perl libnet-snmp-perl
+```
+
+> **Note:** When you install these checks, it also installs pre-configured files in `arbiter/packs/snmp/` folder. They could therefore be used rather than created, as in the following example.
+
+Personally, I define services in hosts configuration files (so in `objects/hosts` folder) and commands in the `objects/commands` folder. But you can do as you want.
+
+> **Note:** the nagios-like configuration files can be organized the way you want. The most important is that the added files are in a `cfg_dir` folder defined in the file `alignak.cfg` !
+
+We first add a command:
+
+```bash
+sudo vi arbiter/objects/commands/check-storage.cfg
+```
+
+```cfg
+define command {
+	command_name	linux_check_snmp_storage
+	command_line	$PLUGINSDIR$/check_snmp_storage.pl -H $HOSTADDRESS$ -C $_HOSTSNMPCOMMUNITY$ -f -m / -w 85 -c 90 -S0,1 
+}
+```
+
+Then we had this command to a service:
+
+```bash
+sudo vi arbiter/objects/hosts/localhost.cfg
+```
+
+```cfg
+define host {
+	use             generic-host
+	contact_groups  admins
+	host_name       localhost
+	address         localhost
+}
+
+define service{
+	service_description   Disks
+	use				generic-service
+	host_name		localhost
+	check_command	linux_check_snmp_storage
+}
+```
+
+That's all ! If we try to resume, we have an host who use a template, who had a service who use a template and this last has a command. **A service must always have an associated host !**
+
+You have noticed that there are variables in these configuration files. They are usually defined in other configuration files, such as templates. For the `$SNMPCOMMUNITYREAD$`, you can find her in `arbiter/packs/resource.d/snmp.cfg` file.
+
+Each variable **must** follow the following syntax: `$MY_VARIABLE$` !
+
+# Start Alignak
+
+Now we are ready to start our alignak server. We'll use **screen** tool we have installed at the beginning of the tutorial. To make things easier we'll create scripts for that.
+
+Return to your home folder or in a folder you're sure and make an `alignak_cmds` folder. Don't create it in the alignak repos folder or install folders of alignak ! Otherwise, it will be erased during updates !
+
+```bash
+cd ~;
+mkdir alignak_cmds; cd alignak_cmds/
+```
+
+## Start/Stop backend
+
+First we have to start the backend. Be sure your **mongod is running** before !
+
+To create the script, run the following commands:
+
+```bash
+# Start file
+cat > alignak_backend_start <<EOF
+#!/bin/sh
+echo "Starting Alignak backend..."
+screen -d -S alignak-backend -m sh -c "alignak-backend-uwsgi"
+sleep 1
+netstat -tulpen | grep 5000
+echo "Started"
+EOF
+
+# Stop file
+cat > alignak_backend_stop <<EOF
+#!/bin/sh
+echo "Stopping Alignak backend..."
+kill -INT \`cat /tmp/alignak-backend.pid\`
+sleep 1
+echo "Stopped"
+EOF
+
+# Make executable
+chmod +x alignak_backend_*
+```
+
+Now simply start backend:
+
+```bash
+sudo ./alignak_backend_start
+# Output
+Starting Alignak backend...
+tcp        0      0 0.0.0.0:5000            0.0.0.0:*               LISTEN      0          30247       2697/uwsgi      
+Started
+```
+
+You can check your logs in _/usr/local/var/log/alignak-backend/backend-error.log_. If there is any error, you'll see it inside.
+
+# Feed Backend
+
+Now that you've backend running, you can feed it with your configuration files. We'll use `alignak-backend-import` tool.
+
+Launch this command by adapting it to your configuration:
+
+```bash
+sudo alignak-backend-import -d -b http://127.0.0.1:5000 -u admin -p admin /usr/local/etc/alignak/alignak.cfg
+```
+
+You can see what each option does with: `alignak-backend-import -h`.
+
+Here the output:
+
+```bash
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+alignak-backend-import, version: 0.9.0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Backend URL: http://127.0.0.1:5000
+Dry-run mode (check only): False
+Delete existing backend data: True
+Updating backend data: False
+Allowing duplicate objects: False
+Default host location: {'type': 'Point', 'coordinates': [46.60611, 1.87528]}
+Importing configuration: ['/usr/local/etc/alignak/alignak.cfg']
+Loading daemon configuration file (None)...
+No daemon configuration file specified, using defaults parameters
+[...]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+alignak-backend-import, inserted elements: 
+ - 25 command(s)
+ - 2 host(s)
+ - 9 host_template(s)
+ - no hostdependency(s)
+ - no hostescalation(s)
+ - 3 hostgroup(s)
+ - 1 realm(s)
+ - 1 service(s)
+ - 35 service_template(s)
+ - no servicedependency(s)
+ - no serviceescalation(s)
+ - 2 servicegroup(s)
+ - 4 timeperiod(s)
+ - 3 user(s)
+ - 1 user_template(s)
+ - 2 usergroup(s)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Global configuration import duration: 3.35982680321
+```
+
+The alignak-backend-import tool will tell you what is imported in backend and will notify you if there is any error.
+
+## Start/Stop alignak daemons
+
+Now that you've you're backend running, nd filled, you can start alignak daemons. You've already scripts inside the _alignak_ repository you've cloned.
+
+```bash
+cd ~
+sudo ./repos/alignak/dev/launch_all.sh
+---
+Alignak ini configuration file found in /usr/local/etc/alignak folder
+Alignak ini configuration file: /usr/local/etc/alignak/alignak.ini
+---
+---
+Alignak daemon: SCHEDULER_MASTER
+---
+Alignak configuration file: /usr/local/etc/alignak/alignak.cfg
+Alignak extra configuration file: 
+---
+Daemon script: SCHEDULER_MASTER_DAEMON = alignak-scheduler
+Daemon configuration: SCHEDULER_MASTER_CFG = /usr/local/etc/alignak/daemons/schedulerd.ini
+Daemon debug file: SCHEDULER_MASTER_DEBUGFILE = /usr/local/var/log/alignak/scheduler-debug.log
+---
+Launching the daemon: SCHEDULER_MASTER with configuration file: /usr/local/etc/alignak/daemons/schedulerd.ini
+Launching the daemon: SCHEDULER_MASTER
+Daemon scheduler is in daemon mode
+Loading daemon configuration file (/usr/local/etc/alignak/daemons/schedulerd.ini)...
+[...]
+INFO:alignak.daemon:Changing working directory to: /usr/local/var/run/alignak
+[2017-05-05 05:51:03 PDT] INFO: [alignak.daemon] Using working directory: /usr/local/var/run/alignak
+INFO:alignak.daemon:Using working directory: /usr/local/var/run/alignak
+[2017-05-05 05:51:03 PDT] INFO: [alignak.http.daemon] Opening HTTP socket at http://127.0.0.1:7770
+INFO:alignak.http.daemon:Opening HTTP socket at http://127.0.0.1:7770
+[2017-05-05 05:51:03 PDT] INFO: [alignak.daemon] Daemonizing...
+INFO:alignak.daemon:Daemonizing...
+```
+
+This script will launch all the daemons, like says in the [Alignak Docs](http://docs.alignak.net/en/develop/03_how_it_work/run_daemons.html#running-alignak), by following the following syntax:
+
+```bash
+# For broker, poller, reactionner, receiver and scheduler
+alignak-<daemon> -c /usr/local/etc/alignak/daemons/<daemon>d.ini
+# For arbiter (the last daemon that should start!)
+alignak-arbiter -c /usr/local/etc/alignak/daemons/arbiterd.ini -a /usr/local/etc/alignak/alignak.cfg
+```
+
+If you've some errors, you'll find logs in `usr/local/var/log/alignak/` for each daemons. If you've installed and configure the `module-logs`, you'll have `monitoring-logs.log` in addition.
+
+# Start/Stop alignak webui
+
+Have a backend and daemons is cool, but see them in an interface should be better. For that, you've the Alignak WebUI.
+
+To start Webui, we'll do the same as for backend, we make script with _screen_ tool.
+
+```bash
+# Start file
+cat > alignak_webui_start <<EOF
+#!/bin/sh
+echo "Starting Alignak WebUI..."
+screen -d -S alignak-webui -m sh -c "alignak-webui-uwsgi"
+sleep 1
+netstat -tulpen | grep 80
+echo "Started"
+EOF
+
+# Stop file
+cat > alignak_webui_stop <<EOF
+#!/bin/sh
+echo "Stopping Alignak WebUI..."
+kill -INT \`cat /tmp/alignak-webui.pid\`
+sleep 1
+echo "Stopped"
+EOF
+
+# Make excutable
+chmod +x alignak_webui_*
+```
+
+Then simply start WebUI:
+
+```bash
+sudo ./alignak_cmds/alignak_webui_start
+```
+
+Then, if you've define your WebUI with your server IP, you should be able to see login page on : http://ip_server.
 
