@@ -2,7 +2,7 @@
 layout: post
 title: Timeseries dans alignak-backend
 lang: fr
-ref: alignak
+ref: alignak-timeseries
 modified:
 description: "Timeseries dans alignak-backend"
 tags: [alignak]

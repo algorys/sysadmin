@@ -770,7 +770,7 @@ If there are some errors, you will find logs in `usr/local/var/log/alignak/` for
 
 Having a backend and running daemons is cool, but viewing them in an interface should be better. For that, you have the Alignak WebUI.
 
-To start Webui, we'll do the same as for the backend, we make script with _screen_ tool.
+To start Webui, we'll do the same as for the backend, we make script with _screen_ tool. Update port in "start" command according to your configuration.
 
 ```bash
 # Start file
@@ -779,7 +779,7 @@ cat > alignak_webui_start <<EOF
 echo "Starting Alignak WebUI..."
 screen -d -S alignak-webui -m sh -c "alignak-webui-uwsgi"
 sleep 1
-netstat -tulpen | grep 80
+netstat -tulpen | grep :80
 echo "Started"
 EOF
 
