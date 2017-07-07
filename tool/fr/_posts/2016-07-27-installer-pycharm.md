@@ -43,12 +43,10 @@ tar xzvf pycharm-community-2016.2.tar.gz -C /tmp/
 
 # Supprimer l'ancienne installation
 
-Si vous avez déjà PyCharm d'installé sur votre PC, supprimer l'ancien dossier et les liens symboliques :
+Si vous avez déjà PyCharm d'installé sur votre PC, supprimer l'ancien dossier d'installation:
 
 ```bash
 sudo rm -R  /opt/pycharm-community
-sudo rm /usr/local/bin/pycharm
-sudo rm /usr/local/bin/inspect
 ```
 
 # Installer PyCharm
@@ -61,14 +59,14 @@ sudo mv /tmp/pycharm-community* /opt/pycharm-community
 
 # Création des Liens Symboliques
 
-Maintenant, créez les liens nécessaire pour les utilisateurs:
+Maintenant, créez les liens nécessaire pour les utilisateurs si c'est votre première installation:
 
 ```bash
 sudo su -c "ln -s /opt/pycharm-community/bin/pycharm.sh /usr/local/bin/pycharm"
 sudo su -c "ln -s /opt/pycharm-community/bin/inspect.sh /usr/local/bin/inspect"
 ```
 
-# Lancer PyCharù
+# Lancer PyCharm
 
 Voilà, c'est bon ! Vous avez juste à lancer PyCharm :
 

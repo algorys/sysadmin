@@ -43,12 +43,10 @@ tar xzvf pycharm-community-2016.2.tar.gz -C /tmp/
 
 # Remove previous install
 
-If you have already install PyCharm on your PC, remove old folder and symlinks:
+If you have already install PyCharm on your PC, remove old installation folder:
 
 ```bash
 sudo rm -R  /opt/pycharm-community
-sudo rm /usr/local/bin/pycharm
-sudo rm /usr/local/bin/inspect
 ```
 
 # Install PyCharm
@@ -61,7 +59,7 @@ sudo mv /tmp/pycharm-community* /opt/pycharm-community
 
 # Making PyCharm Symlinks
 
-Now create symlinks for your user:
+Now create symlinks for your user, if this is your first Pycharm installation:
 
 ```bash
 sudo su -c "ln -s /opt/pycharm-community/bin/pycharm.sh /usr/local/bin/pycharm"
